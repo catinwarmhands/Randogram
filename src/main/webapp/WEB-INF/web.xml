@@ -3,6 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <welcome-file-list>
+        <welcome-file>pages/index.html</welcome-file>
+    </welcome-file-list>
+
     <display-name>Spring MVC Application</display-name>
 
     <servlet>
@@ -15,4 +19,5 @@
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 </web-app>
