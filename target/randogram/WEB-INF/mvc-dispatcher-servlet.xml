@@ -12,11 +12,11 @@
     <context:property-placeholder location="classpath:credentials.properties"/>
     <context:annotation-config/>
 
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/**" location="/"/>
     <mvc:annotation-driven/>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/old/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/pages/"/>-->
+        <!--<property name="suffix" value=".html"/>-->
+    <!--</bean>-->
 </beans>
