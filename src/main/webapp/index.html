@@ -39,6 +39,7 @@
     <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
 
     <script src="./resources/js/main.js"></script>
+    <script src="./resources/js/bootstrap.min.js"></script>
     <script src="./resources/js/bootstrap-notify.min.js"></script>
     <script src="./resources/js/bootstrap-tagsinput.min.js"></script>
     <script src="./resources/js/bootstrap-tagsinput-angular.min.js"></script>
@@ -49,8 +50,10 @@
 
     <div class="controls">
         <div class="tags-section">
-            <label for="bootstrapTagsInputForm">Tags:</label>
-            <form id="bootstrapTagsInputForm" method="post" action="/load" class="form-horizontal"></form>
+            <!--<label class="control-label" for="tags">Tags:</label>-->
+            <!--<input type="text" name="tags" id="tags" class="form-control" data-role="tagsinput"/>-->
+            <label for="tags">Tags:</label>
+            <input type="text" name="tags" class="form-control" placeholder="Tags list" id="tags"/>
         </div>
 
         <div class="subscribed-section">
@@ -82,8 +85,12 @@
         </div>
 
         <div class="buttons-section">
-            <p>button1</p>
-            <p>button2</p>
+            <div class="search-button">
+                <button type="submit" name="search" class="btn btn-lg btn-success">Search</button>
+            </div>
+            <div class="chooseLucky-button">
+                <button type="submit" name="chooseLucky" class="btn btn-lg btn-info">Who is lucky?</button>
+            </div>
         </div>
     </div>
 </div>
