@@ -11,8 +11,10 @@ body{
 .left-menu {
     width: 250px;
     float: left;
-    color: white;
     background-color: #505050;
+}
+.left-menu label{
+    color: white;
 }
 
 .logo{
@@ -50,13 +52,6 @@ body{
     padding:10px;
 }
 
-
-/*.checkbox {*/
-    /*padding-left: 0px;*/
-/*}*/
-/*.checkbox label {*/
-    /*margin-left: 0px;*/
-/*}*/
 
 .right {
     margin-left: 250px;
