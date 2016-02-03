@@ -1,0 +1,61 @@
+/**{*/
+    /*padding: 0;*/
+    /*margin: 0 auto;*/
+/*}*/
+body{
+    padding: 0;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+.left-menu {
+    width: 250px;
+    float: left;
+    color: white;
+    background-color: #505050;
+}
+
+.logo{
+    padding: 10px;
+}
+
+.logo img{
+    width: 100%;
+}
+
+.controls {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.tags-section{
+    margin-bottom: 10px;
+}
+
+.form-tags{
+    padding-left: 70px;
+
+    width: 80%;
+}
+
+.subscribed-section{
+    margin-bottom: 10px;
+}
+.date-section{
+    margin-bottom: 10px;
+}
+.buttons-section{
+    margin-bottom: 10px;
+}
+
+/*.checkbox {*/
+    /*padding-left: 0px;*/
+/*}*/
+/*.checkbox label {*/
+    /*margin-left: 0px;*/
+/*}*/
+
+.right {
+    margin-left: 250px;
+    background-color: yellow;
+}
