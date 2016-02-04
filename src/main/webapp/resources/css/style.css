@@ -42,23 +42,18 @@ body{
 .date-section{
     margin-bottom: 20px;
 }
+.date-fields{
+    /*display: none;*/
+}
 .buttons-section{
     margin-bottom: 20px;
 }
-.search-button{
+.search-button, .more-button, .chooseLucky-button{
     padding:10px;
     text-align: center;
 }
-.chooseLucky-button{
-    text-align: center;
-    padding:10px;
-}
-.info {
-    margin-left: 250px;
-    color: black;
-    background-color: lightcoral;
-}
+
 .right {
+    padding:0;
     margin-left: 250px;
-    background-color: yellow;
 }

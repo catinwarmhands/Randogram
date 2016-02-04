@@ -9,6 +9,7 @@
 
     <title>Randogram</title>
 
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>-->
     <!-- Bootstrap theme -->
     <!--<link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">-->
     <!--<link href="./resources/css/animate.css" rel="stylesheet">-->
@@ -42,6 +43,7 @@
     <script src="http://knockoutjs.com/downloads/knockout-3.4.0.js"></script>
     <script src="./resources/js/main.js"></script>
 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body>
@@ -63,7 +65,7 @@
             <label for="date">Search by date:</label>
             <input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">
 
-            <div class="date-fields">
+            <div class="date-fields" data-bind="visible: isSearchByDate()">
                 <label for="dateTimeFrom">From:</label>
                 <div class='input-group date'>
                     <input type='text' name="dateTimeFrom" data-bind="value: dateFrom" id="dateTimeFrom" class="form-control"/>
@@ -82,23 +84,20 @@
             <div class="search-button">
                 <button type="submit" name="search" class="btn btn-lg btn-success" data-bind="click: searchAction">Search</button>
             </div>
+            <div class="more-button">
+                <button type="submit" name="more" class="btn btn-lg btn-success" data-bind="click: moreAction">More</button>
+                <span data-bind="text: minTagId"></span>
+            </div>
+
             <div class="chooseLucky-button">
                 <button type="submit" name="chooseLucky" class="btn btn-lg btn-info" data-bind="click: selectAction">Who is lucky?</button>
             </div>
         </div>
     </div>
 </div>
-<div class="info">
-    <p>инфо:</p>
-    <p>tags:<span data-bind="text: tags"></span></p>
-    <p>isSubscribed:<span data-bind="text: isSubscribed"></span></p>
-    <p>isSearchByDate:<span data-bind="text: isSearchByDate"></span></p>
-    <p>dateFrom:<span data-bind="text: dateFrom"></span></p>
-    <p>dateTo:<span data-bind="text: dateTo"></span></p>
-</div>
-<div class="right">
-    <p>вечером тут должны быть фотки</p>
-    <span data-bind="text: resp"></span>
+
+<div class="right" data-bind="foreach: images">
+    <img data-bind="attr: {src: thumbnail}">
 </div>
 <script src="./resources/js/myscripts.js"></script>
 </body>
