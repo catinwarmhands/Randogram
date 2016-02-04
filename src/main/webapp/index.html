@@ -11,10 +11,10 @@
 
     <!-- Bootstrap theme -->
     <!--<link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">-->
-    <link href="./resources/css/animate.css" rel="stylesheet">
+    <!--<link href="./resources/css/animate.css" rel="stylesheet">-->
     <!--<link href="./resources/css/bootstrap-tagsinput.css" rel="stylesheet"/>-->
     <!--<link href="./resources/css/bootstrap-tagsinput.less" rel="stylesheet"/>-->
-    <link href="./resources/css/main.css" rel="stylesheet"/>
+    <!--<link href="./resources/css/main.css" rel="stylesheet"/>-->
 
     <!-- Custom styles for this template -->
     <!--<link rel="stylesheet" href="./resources/css/style.css">-->
@@ -51,7 +51,7 @@
 
         <div class="tags-section">
             <label for="tags">Tags:</label>
-            <input type="text" name="tags" class="form-control" placeholder="Tags list (ex. #snow #unicorn)" id="tags"/>
+            <input type="text" name="tags" class="form-control" data-bind="value: tags" placeholder="Tags list (ex. #snow #unicorn)" id="tags"/>
         </div>
 
         <div class="subscribed-section">
@@ -61,18 +61,18 @@
 
         <div class="date-section">
             <label for="date">Search by date:</label>
-            <input type="checkbox"name="date" id="date">
+            <input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">
 
             <div class="date-fields">
                 <label for="dateTimeFrom">From:</label>
                 <div class='input-group date'>
-                    <input type='text' name="dateTimeFrom" id="dateTimeFrom" class="form-control"/>
+                    <input type='text' name="dateTimeFrom" data-bind="value: dateFrom" id="dateTimeFrom" class="form-control"/>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
 
                 <label for="dateTimeTo">To: </label>
                 <div class='input-group date'>
-                    <input type='text' name="dateTimeTo" id="dateTimeTo" class="form-control"/>
+                    <input type='text' name="dateTimeTo" data-bind="value: dateTo" id="dateTimeTo" class="form-control"/>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
             </div>
@@ -83,14 +83,22 @@
                 <button type="submit" name="search" class="btn btn-lg btn-success" data-bind="click: searchAction">Search</button>
             </div>
             <div class="chooseLucky-button">
-                <button type="submit" name="chooseLucky" class="btn btn-lg btn-info">Who is lucky?</button>
+                <button type="submit" name="chooseLucky" class="btn btn-lg btn-info" data-bind="click: selectAction">Who is lucky?</button>
             </div>
         </div>
     </div>
 </div>
+<div class="info">
+    <p>инфо:</p>
+    <p>tags:<span data-bind="text: tags"></span></p>
+    <p>isSubscribed:<span data-bind="text: isSubscribed"></span></p>
+    <p>isSearchByDate:<span data-bind="text: isSearchByDate"></span></p>
+    <p>dateFrom:<span data-bind="text: dateFrom"></span></p>
+    <p>dateTo:<span data-bind="text: dateTo"></span></p>
+</div>
 <div class="right">
-    <p>тут будут фотки (к вечеру)</p>
-    <span data-bind="text: text"></span>
+    <p>вечером тут должны быть фотки</p>
+    <span data-bind="text: resp"></span>
 </div>
 <script src="./resources/js/myscripts.js"></script>
 </body>
