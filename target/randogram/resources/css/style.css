@@ -1,6 +1,6 @@
 /**{*/
-    /*padding: 0;*/
-    /*margin: 0 auto;*/
+/*padding: 0;*/
+/*margin: 0 auto;*/
 /*}*/
 body{
     padding: 0;
@@ -56,4 +56,14 @@ body{
 .right {
     padding:0;
     margin-left: 250px;
+}
+
+.control-label {
+    display: inline-block;
+    vertical-align: top;
+    float: none;
+}
+
+#fountainG {
+    vertical-align: middle;
 }

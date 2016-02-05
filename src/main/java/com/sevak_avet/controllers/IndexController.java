@@ -40,11 +40,6 @@ public class IndexController {
     @Autowired
     private InstagramFetcher<Image> fetcher;
 
-    @Autowired
-    private InstagramService instagramService;
-
-
-
     @RequestMapping(value = "/getImagesByTags", method = GET)
     @ResponseBody
     public String getImagesByTags(@RequestParam("tags") String tagsString){
@@ -56,9 +51,9 @@ public class IndexController {
     }
     @RequestMapping(value = "/getNextPage", method = GET)
     @ResponseBody
-    public String getNextPage(@RequestParam("tags") String tagsString, @RequestParam("minTagId") String minTagId){
+    public String getNextPage(@RequestParam("tags") String tagsString, @RequestParam("maxTagId") String maxTagId){
 
-        Map<String,Set<Image>> urls = fetcher.fetchByTag(tagsString, minTagId);
+        Map<String,Set<Image>> urls = fetcher.fetchByTag(tagsString, maxTagId);
 
         Gson gson = new Gson();
         return gson.toJson(urls);

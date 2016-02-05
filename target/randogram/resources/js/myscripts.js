@@ -1,65 +1,73 @@
 function RandogramViewModel() {
-     var self = this; 
+    var self = this;
 
-    self.tags = ko.observable("randogram");
+    self.tags = ko.observable("griddynamics");
+    self.tags.subscribe(function(){
+        self.maxTagId(null);
+    });
     self.isSubscribed = ko.observable(false);
     self.isSearchByDate = ko.observable(false);
-    //self.onSearchByDate = function(){
-    //    self.isSearchByDate = document.getElementById("date").checked;
-    //
-    //    alert(self.isSearchByDate);
-    //    if(self.isSearchByDate) {
-    //        document.getElementsByClassName("date-fields").style.display = "none";
-    //    }else{
-    //        document.getElementsByClassName("date-fields").style.display = "block";
-    //    }
-    //
-    //}
-    self.dateFrom = ko.observable();
-    self.dateTo = ko.observable();
 
-    self.minTagId = ko.observable();
+    self.dateFrom = ko.observable(new Date());
+    self.dateTo = ko.observable(new Date());
+
+    self.maxTagId = ko.observable();
     self.images = ko.observableArray([]);
+    self.isLoading = ko.observable(false);
+
+    var pushImages = function(images){
+        for(var i = 0; i < images.length; i++) {
+            self.images.push(images[i]);
+        }
+    };
+
+    var updateSearchResults = function(data){
+        for (maxTagId in data) {
+            var parsed = data[maxTagId];
+            pushImages(parsed);
+            self.maxTagId(maxTagId);
+        }
+    };
 
     self.searchAction = function () {
+        self.isLoading(true);
         $.ajax({
             url: "getImagesByTags",
             data: {
                 tags: self.tags(),
-                minTagId: self.minTagId()
+                maxTagId: self.maxTagId()
             },
             success: function (data) {
-                for (minTagId in data) {
-                    var parsed = data[minTagId];
-                    for(var i = 0; i < parsed.length; i++) {
-                        self.images.push(parsed[i]);
-                    }
-                    self.minTagId(minTagId);
-                }
+                self.images([]);
+                updateSearchResults(data);
+                self.isLoading(false);
+            },
+            error: function () {
+                self.isLoading(false);
             },
             dataType: "json"
         });
-    }
+    };
+
     self.moreAction = function () {
+        self.isLoading(true);
         $.ajax({
             url: "getNextPage",
             data: {
                 tags: self.tags(),
-                minTagId: self.minTagId()
+                maxTagId: self.maxTagId()
             },
             success: function (data) {
-                for (minTagId in data) {
-                    var parsed = data[minTagId];
-                    for(var i = 0; i < parsed.length; i++) {
-                        self.images.push(parsed[i]);
-                    }
-                    self.minTagId(minTagId);
-                }
-
+                updateSearchResults(data);
+                self.isLoading(false);
+            },
+            error: function () {
+                self.isLoading(false);
             },
             dataType: "json"
         });
-    }
+    };
+
     self.selectAction = function () {
         alert("selectAction");
     }
