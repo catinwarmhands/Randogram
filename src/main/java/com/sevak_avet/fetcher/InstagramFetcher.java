@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by savetisyan on 14/01/16
  */
 public interface InstagramFetcher<T> {
-    Map<String,Set<T>> fetchByTag(String tag, String maxTagId);
+    Set<T> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, String tag);
     String getEmbeddedHtml(String url);
     String chooseLucky(LocalDateTime fromDate, LocalDateTime toDate, String ... tags);
 }
