@@ -1,10 +1,12 @@
-function RandogramViewModel() {
+ko.applyBindings(new function RandogramViewModel() {
+
     var self = this;
 
     self.tags = ko.observable("griddynamics");
-    self.areTagsValid = ko.computed (function () {
-        return self.tags().length==0;
+    self.areTagsInvalid = ko.computed (function () {
+        return self.tags().length == 0;
     });
+
     self.isSubscribed = ko.observable(false);
     self.isSearchByDate = ko.observable(false);
 
@@ -13,18 +15,16 @@ function RandogramViewModel() {
 
     self.images = ko.observableArray([]);
     self.imagesCount = ko.computed (function () {
-        return self.images().length==1? "Winner!" :self.images().length+" images found";
+        return self.images().length==1 ? "Winner!" : self.images().length+" images found";
     });
     self.isLoading = ko.observable(false);
 
     var pushImages = function (images) {
-        for (var i = 0; i < images.length; i++) {
-            self.images.push(images[i]);
-        }
+        self.images(self.images().concat(images));
     };
 
     self.searchAction = function () {
-        self.images([]);
+
         self.isLoading(true);
         $.ajax({
             url: "getImagesByTags",
@@ -33,14 +33,16 @@ function RandogramViewModel() {
                 dateTimeFrom: !self.dateFrom() ? null : moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A"),
                 dateTimeTo: !self.dateTo() ? null : moment(self.dateTo()).format("MM/DD/YYYY hh:mm A")
             },
+            dataType: "json",
             success: function (data) {
+                self.images([]);
                 pushImages(data);
                 self.isLoading(false);
             },
             error: function () {
+                alert("error");
                 self.isLoading(false);
-            },
-            dataType: "json"
+            }
         });
     };
 
@@ -49,14 +51,28 @@ function RandogramViewModel() {
         var min = 0;
         var image = self.images()[Math.floor(Math.random() * (max - min)) + min];
         self.images([image]);
-    }
+    };
 
-    self.isLuckyButtonEnabled = function () {
+    self.isLuckyButtonEnabled = ko.computed (function () {
         return self.images().length>1;
-    }
-    self.isSearchButtonEnabled = function () {
-        return self.areTagsValid();
-    }
-};
-var randogramViewModel = new RandogramViewModel();
-ko.applyBindings(randogramViewModel);
+    });
+    self.isSearchButtonEnabled = ko.computed (function () {
+        return !self.areTagsInvalid() && !self.isLoading();
+    });
+    self.loginAction = function(){
+
+        $.ajax({
+            url: "login",
+            data: {
+
+            },
+            dataType: "text",
+            success: function (data) {
+                alert(data);
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    };
+});

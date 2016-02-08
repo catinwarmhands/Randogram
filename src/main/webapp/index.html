@@ -40,7 +40,7 @@
         <div class="tags-section">
             <label for="tags">Tags:</label>
             <input type="text" name="tags" class="form-control" data-bind="value: tags" data-role="tagsinput" placeholder="Tags list (ex. #snow #unicorn)" id="tags"/>
-            <div data-bind="visible: areTagsValid" style="color: red">Tag field cannot be empty!</div>
+            <div data-bind="visible: areTagsInvalid" style="color: red">Tag field cannot be empty!</div>
         </div>
 
         <div class="subscribed-section">
@@ -69,10 +69,13 @@
 
         <div class="buttons-section">
             <div class="search-button">
-                <button type="submit" name="search" class="btn btn-lg btn-success" data-bind="click: searchAction, enable: isSearchButtonEnabled">Search</button>
+                <button type="submit" name="search" class="btn btn-lg btn-success" data-bind="enable: isSearchButtonEnabled, click: searchAction">Search</button>
             </div>
             <div class="chooseLucky-button">
                 <button type="submit" name="chooseLucky" class="btn btn-lg btn-info" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
+            </div>
+            <div class="chooseLucky-button">
+                <button type="submit" name="lgn" class="btn btn-lg btn-info" data-bind="click: loginAction">loginAction</button>
             </div>
         </div>
     </div>
@@ -88,7 +91,7 @@
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
             </div>
-            <div class="image">
+            <div class="image-thumbnail">
                 <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
             </div>
         </div>

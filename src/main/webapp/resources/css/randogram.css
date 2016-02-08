@@ -66,11 +66,11 @@ body{
     display: inline-block;
     border: 1px ridge;
     margin: 15px;
+    background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-.image {
-    padding: 5px;
-
+.image-thumbnail {
+    padding: 3px;
 }
 
 .user-avatar{
