@@ -35,8 +35,8 @@
 <body>
 <div class="left-menu">
     <div class="logo"><img src="./resources/images/logo.png"></div>
-    <div class="controls">
 
+    <div class="controls">
         <div class="tags-section">
             <label for="tags">Tags:</label>
             <input type="text" name="tags" class="form-control" data-bind="value: tags" data-role="tagsinput" placeholder="Tags list (ex. #snow #unicorn)" id="tags"/>
@@ -80,7 +80,7 @@
 
 <div class="right">
     <span data-bind="text: imagesCount"></span>
-    <div class="main" data-bind="foreach: images">
+    <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-bottom">
                 <span data-bind="text: likes"></span><span>♡</span>
@@ -93,9 +93,7 @@
             </div>
         </div>
     </div>
-    <!--<div data-bind="foreach: images">-->
-        <!--<img data-bind="attr: {src: thumbnail}">-->
-    <!--</div>-->
+    <!--loading animation-->
     <div id="fountainG" data-bind="visible: isLoading">
         <div id="fountainG_1" class="fountainG"></div>
         <div id="fountainG_2" class="fountainG"></div>
