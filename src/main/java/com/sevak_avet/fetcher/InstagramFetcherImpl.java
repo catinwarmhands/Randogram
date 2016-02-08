@@ -7,15 +7,8 @@ import org.jinstagram.entity.tags.TagMediaFeed;
 import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -27,29 +20,45 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     @Autowired
     private Instagram instagram;
 
-    public HashMap <String, Set <Image>> fetchByTag(String tag, String maxTagId) {
-        HashMap <String, Set <Image>> imageUrls = new HashMap<>();
-
+    private Set<Image> fetchByTag(String tag) {
         TagMediaFeed feed;
         try {
-            feed = instagram.getRecentMediaTags(tag, null, maxTagId);
+            feed = instagram.getRecentMediaTags(tag);
         } catch (InstagramException e) {
             throw new RuntimeException(e);
         }
 
+        Set<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toSet());
         Pagination pagination = feed.getPagination();
 
-        if (pagination.getNextMaxId() != null) {
+        while (pagination.getNextMaxTagId() != null) {
             try {
-                feed = instagram.getRecentMediaTags(tag,null,pagination.getNextMaxTagId());
-                pagination = feed.getPagination();
-                imageUrls.put(pagination.getNextMaxTagId(),feed.getData().stream().map(Image::new).collect(Collectors.toSet()));
+                feed = instagram.getRecentMediaTags(tag, null, pagination.getNextMaxTagId());
             } catch (InstagramException e) {
                 throw new RuntimeException(e);
             }
+
+            imageUrls.addAll(feed.getData().stream().map(Image::new).collect(Collectors.toSet()));
+            pagination = feed.getPagination();
         }
 
         return imageUrls;
+    }
+
+    private Set<Image> fetchByTag(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
+        return fetchByTag(tag)
+                .stream()
+                .filter(x -> (fromDate==null || x.getDate().isAfter(fromDate)) && (toDate==null || x.getDate().isBefore(toDate)))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Image> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
+//        return Arrays.stream(tags)
+//                .map(tag -> fetchByTag(fromDate, toDate, tag))
+//                .flatMap(Collection::stream)
+//                .collect(Collectors.toSet());
+
+        return fetchByTag(fromDate, toDate, tag);
     }
 
     @Override
