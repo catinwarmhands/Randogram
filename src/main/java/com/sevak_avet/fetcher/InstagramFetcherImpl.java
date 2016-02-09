@@ -31,7 +31,8 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         List<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toList());
         Pagination pagination = feed.getPagination();
 
-        while (pagination.getNextMaxTagId() != null) {
+        int i=0;//only 10 pages (10*20 = 200 images)
+        while (++i < 10 && pagination.getNextMaxTagId() != null) {
             try {
                 feed = instagram.getRecentMediaTags(tag, null, pagination.getNextMaxTagId());
             } catch (InstagramException e) {
@@ -52,14 +53,37 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
                 .collect(Collectors.toList());
     }
 
-    public List<Image> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
-//        return Arrays.stream(tags)
-//                .map(tag -> fetchByTag(fromDate, toDate, tag))
-//                .flatMap(Collection::stream)
-//                .collect(Collectors.toList());
+    public List<Image> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, ArrayList<String> tags) {
 
-        return fetchByTag(fromDate, toDate, tag);
+        LinkedHashSet<Image> imagesSet = new LinkedHashSet<>();
+
+        for (String tag : tags) {
+            imagesSet.addAll(fetchByTag(fromDate, toDate, tag));
+        }
+
+        if(tags.size() > 1) {
+            Iterator<Image> i = imagesSet.iterator();
+            while (i.hasNext()) {
+                Image image = i.next();
+
+                boolean ok = true;
+                for (String tag : tags) {
+                    if (!image.getTags().contains(tag)) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (!ok) {
+                    i.remove();
+                }
+            }
+        }
+        
+        ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
+        return imagesList;
     }
+
+
 
     @Override
     public String getEmbeddedHtml(String url) {
