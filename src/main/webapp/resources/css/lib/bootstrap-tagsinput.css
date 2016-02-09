@@ -17,9 +17,11 @@
   box-shadow: none;
   outline: none;
   background-color: transparent;
-  padding: 0;
-  margin: 0;
-  width: auto !important;
+  /*padding: 0;*/
+  /*margin: 0;*/
+  /*width: auto !important;*/
+  padding: 0px;
+  margin: 0px 2px;
   max-width: inherit;
 }
 .bootstrap-tagsinput input:focus {

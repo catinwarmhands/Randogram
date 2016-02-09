@@ -2,8 +2,9 @@ ko.applyBindings(new function RandogramViewModel() {
 
     var self = this;
 
-    self.tags = ko.observable("griddynamics");
+    self.tags = ko.observable("");
     self.areTagsInvalid = ko.computed (function () {
+        //return false;
         return self.tags().length == 0;
     });
 
@@ -92,4 +93,16 @@ $(function () {
     $("#dateTimeTo").on("dp.change", function (e) {
         $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date);
     });
+});
+
+$('#tags').on('itemAdded', function(obj) {
+
+    var tagsinputWidth = $('#tags').parent().find('.bootstrap-tagsinput').width();// Width of Bootstrap Tags Input.
+    var tagWidth = $('#tags').parent().find('.bootstrap-tagsinput span.tag').last().width();// To get the Width of individual Tag.
+    if(tagWidth > tagsinputWidth) {
+        //If Width of the Tag is more than the width of Container then we crop text of the Tag
+        var tagsText = obj.item.value;// To Get Tags Value
+        var res = tagsText.substr(0, 5); // Here I'm displaying only first 5 Characters.(You can give any number)
+        $('#Id').parent().find('.bootstrap-tagsinput span.tag').last().html(res+"..." +'<span data-role="remove"></span>');
+    }
 });

@@ -9,35 +9,36 @@
 
     <title>Randogram</title>
 
-    <link href="resources/css/lib/animate.css" rel="stylesheet">
-    <link href="resources/css/lib/bootstrap-datepicker.css" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/lib/bootstrap-tagsinput.css" rel="stylesheet"/>
-    <link href="resources/css/lib/bootstrap-tagsinput.less" rel="stylesheet"/>
-    <link href="resources/css/lib/loading-animation-style.css" rel="stylesheet"/>
-
-
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!--Libs-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
-    <script src="resources/js/lib/bootstrap.js"></script>
-    <script src="resources/js/lib/moment.min.js"></script>
     <script src="http://knockoutjs.com/downloads/knockout-3.4.0.js"></script>
 
+    <!--Bootstrap-->
+    <script src="resources/js/lib/bootstrap.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
     <!--DateTimePicker-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
-    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css">
     <script src="resources/js/datetimepicker-binding.js"></script>
+
+    <!--Tags input-->
+    <script src="resources/js/lib/bootstrap-tagsinput.js"></script>
+    <link rel="stylesheet" href="resources/css/lib/bootstrap-tagsinput.css">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="resources/css/randogram.css">
+
+    <!--Loading animation-->
+    <link rel="stylesheet" href="resources/css/lib/animate.css">
+    <link rel="stylesheet" href="resources/css/lib/loading-animation-style.css">
 </head>
 <body>
 <div class="left-menu">
@@ -46,7 +47,7 @@
     <div class="controls">
         <div class="tags-section">
             <label for="tags">Tags:</label>
-            <input type="text" name="tags" class="form-control" data-bind="value: tags" data-role="tagsinput" placeholder="Tags list (ex. #snow #unicorn)" id="tags"/>
+            <input type="text" class="form-control" data-bind="value: tags" data-role="tagsinput" id="tags"/>
             <div data-bind="visible: areTagsInvalid" style="color: red">Tag field cannot be empty!</div>
         </div>
 
@@ -92,8 +93,9 @@
 
 <div class="right">
     <span data-bind="text: imagesCount"></span>
-    <a>from: <span data-bind="text: dateFrom"></span></a>
-    <a>to: <span data-bind="text: dateTo"></span></a>
+    <a><br>tags: <span data-bind="text: tags"></span><br></a>
+    <a>from: <span data-bind="text: dateFrom"></span><br></a>
+    <a>to: <span data-bind="text: dateTo"></span><br></a>
 
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">

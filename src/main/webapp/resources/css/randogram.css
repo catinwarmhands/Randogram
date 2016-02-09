@@ -32,6 +32,12 @@ body{
     margin-bottom: 20px;
 }
 
+.bootstrap-tagsinput {
+    width: 100% !important;
+    padding-bottom: 8px;
+    line-height: 2;
+}
+
 .subscribed-section{
     margin-bottom: 10px;
 }
