@@ -11,13 +11,12 @@
 
     <link href="resources/css/lib/animate.css" rel="stylesheet">
     <link href="resources/css/lib/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/lib/bootstrap-tagsinput.css" rel="stylesheet"/>
     <link href="resources/css/lib/bootstrap-tagsinput.less" rel="stylesheet"/>
     <link href="resources/css/lib/loading-animation-style.css" rel="stylesheet"/>
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="resources/css/randogram.css">
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -31,6 +30,14 @@
     <script src="resources/js/lib/moment.min.js"></script>
     <script src="http://knockoutjs.com/downloads/knockout-3.4.0.js"></script>
 
+    <!--DateTimePicker-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <script src="resources/js/datetimepicker-binding.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="resources/css/randogram.css">
 </head>
 <body>
 <div class="left-menu">
@@ -54,15 +61,17 @@
 
             <div class="date-fields" data-bind="visible: isSearchByDate()">
                 <label for="dateTimeFrom">From:</label>
-                <div class='input-group date'>
-                    <input type='text' id="dateTimeFrom" data-bind="dateValue: dateFrom, endDate: dateTo()" class="form-control" autocomplete="off"/>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker1" data-bind="datetimepicker: dateFrom">
+                        <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                    </div>
                 </div>
 
                 <label for="dateTimeTo">To:</label>
-                <div class='input-group date'>
-                    <input type='text' id="dateTimeTo" data-bind="dateValue: dateTo, startDate: dateFrom()" class="form-control" autocomplete="off"/>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker2" data-bind="datetimepicker: dateTo">
+                        <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,6 +92,9 @@
 
 <div class="right">
     <span data-bind="text: imagesCount"></span>
+    <a>from: <span data-bind="text: dateFrom"></span></a>
+    <a>to: <span data-bind="text: dateTo"></span></a>
+    
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-bottom">
@@ -108,8 +120,7 @@
         <div id="fountainG_8" class="fountainG"></div>
     </div>
 </div>
-<script src="resources/js/lib/bootstrap-datepicker.js"></script>
-<script src="resources/js/lib/ko-datepicker-bindings.js"></script>
+<!--Custom scripts for this template-->
 <script src="resources/js/randogram.js"></script>
 </body>
 </html>

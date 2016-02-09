@@ -8,7 +8,7 @@ ko.applyBindings(new function RandogramViewModel() {
     });
 
     self.isSubscribed = ko.observable(false);
-    self.isSearchByDate = ko.observable(false);
+    self.isSearchByDate = ko.observable(true);
 
     self.dateFrom = ko.observable();
     self.dateTo = ko.observable();
@@ -60,19 +60,36 @@ ko.applyBindings(new function RandogramViewModel() {
         return !self.areTagsInvalid() && !self.isLoading();
     });
     self.loginAction = function(){
+        //alert("dateFrom: "+self.dateFrom());
+        //alert("dateTo: "+self.dateTo());
 
-        $.ajax({
-            url: "login",
-            data: {
-
-            },
-            dataType: "text",
-            success: function (data) {
-                alert(data);
-            },
-            error: function () {
-                alert("error");
-            }
-        });
+        //$.ajax({
+        //    url: "login",
+        //    data: {
+        //
+        //    },
+        //    dataType: "text",
+        //    success: function (data) {
+        //        alert(data);
+        //    },
+        //    error: function () {
+        //        alert("error");
+        //    }
+        //});
     };
+
+});
+
+//Activate datetimepickers and make them linked to each other
+$(function () {
+    $('#datetimepicker1').datetimepicker();
+    $('#datetimepicker2').datetimepicker({
+        useCurrent: false //Important! See issue #1075
+    });
+    $("#datetimepicker1").on("dp.change", function (e) {
+        $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+    });
+    $("#datetimepicker2").on("dp.change", function (e) {
+        $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+    });
 });

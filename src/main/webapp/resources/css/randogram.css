@@ -58,9 +58,9 @@ body{
     margin-left: 250px;
 }
 .content{
-    padding-top: 15px;
-    padding-left: 15px;
+    padding: 15px;
 }
+
 .image-cell{
     position: relative;
     display: inline-block;
@@ -88,9 +88,11 @@ body{
 .user-avatar img{
     width: 100%;
 }
+
 .image-cell:hover .image-info-bottom{
     display: block;
 }
+
 .image-info-bottom{
     display: none;
     position: absolute;
@@ -104,3 +106,4 @@ body{
     text-align: right;
     padding: 5px;
 }
+
