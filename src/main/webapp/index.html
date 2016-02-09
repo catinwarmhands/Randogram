@@ -62,14 +62,14 @@
             <div class="date-fields" data-bind="visible: isSearchByDate()">
                 <label for="dateTimeFrom">From:</label>
                 <div class="form-group">
-                    <div class="input-group date" id="datetimepicker1" data-bind="datetimepicker: dateFrom">
+                    <div class="input-group date" id="dateTimeFrom" data-bind="datetimepicker: dateFrom">
                         <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
                     </div>
                 </div>
 
                 <label for="dateTimeTo">To:</label>
                 <div class="form-group">
-                    <div class="input-group date" id="datetimepicker2" data-bind="datetimepicker: dateTo">
+                    <div class="input-group date" id="dateTimeTo" data-bind="datetimepicker: dateTo">
                         <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
     <span data-bind="text: imagesCount"></span>
     <a>from: <span data-bind="text: dateFrom"></span></a>
     <a>to: <span data-bind="text: dateTo"></span></a>
-    
+
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-bottom">
