@@ -78,7 +78,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
                 }
             }
         }
-        
+
         ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
         return imagesList;
     }

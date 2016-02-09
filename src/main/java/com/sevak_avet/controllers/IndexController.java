@@ -68,20 +68,7 @@ public class IndexController {
 //        return "redirect:/index";
 //
 //    }
-
-    @RequestMapping(value = "/getImagesByTags", method = GET)
-    @ResponseBody
-    public String getImagesByTags (@RequestParam("tags") String tagsString) {
-
-        return getImagesByTagsAndDate(tagsString, null, null);
-    }
-
-    @RequestMapping(value = "/getImagesByTagsAndDate", method = GET)
-    @ResponseBody
-    public String getImagesByTagsAndDate (@RequestParam("tags") String tagsString,
-                                   @RequestParam("dateTimeFrom") String from,
-                                   @RequestParam("dateTimeTo") String to) {
-
+    private String getImages(String tagsString, String from, String to){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
         LocalDateTime fromDate = from==""? null: LocalDateTime.parse(from, formatter);
         LocalDateTime toDate = to==""? null: LocalDateTime.parse(to, formatter);
@@ -90,6 +77,21 @@ public class IndexController {
         List<Image> images = fetcher.fetchByTags(fromDate, toDate, tags);
 
         return new Gson().toJson(images);
+    }
+    @RequestMapping(value = "/getImagesByTags", method = GET)
+    @ResponseBody
+    public String getImagesByTags (@RequestParam("tags") String tagsString) {
+
+        return getImages(tagsString,"","");
+    }
+
+    @RequestMapping(value = "/getImagesByTagsAndDate", method = GET)
+    @ResponseBody
+    public String getImagesByTagsAndDate (@RequestParam("tags") String tagsString,
+                                          @RequestParam("dateTimeFrom") String from,
+                                          @RequestParam("dateTimeTo") String to) {
+
+        return getImages(tagsString,from,to);
     }
 
 }
