@@ -26,13 +26,13 @@ public class LoginController {
 
         String code = request.getParameter("code");
         if (code == null) {
-            return "redirect:/index";
+            return "redirect:/index.html";
         }
 
         Verifier verifier = new Verifier(code);
         Token accessToken = instagramService.getAccessToken(null, verifier);
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);
-        return "redirect:/index";
+        return "redirect:/index.html";
     }
 }

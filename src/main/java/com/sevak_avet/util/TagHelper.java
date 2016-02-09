@@ -1,4 +1,4 @@
-package com.sevak_avet.controllers;
+package com.sevak_avet.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Time: 11:25
  */
 
-public class StringHelper{
+public class TagHelper {
     public static ArrayList<String> splitTags(String tagsString){
         tagsString = tagsString.replace("#", "").replace(" ", "");//remove "#" and " "
         String[] tags = tagsString.split(",");

@@ -13,7 +13,6 @@ import java.util.Set;
  * Created by savetisyan on 14/01/16
  */
 public interface InstagramFetcher<T> {
-    List<T> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, ArrayList<String> tags);
+    List<T> fetchByTags(ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate);
     String getEmbeddedHtml(String url);
-    String chooseLucky(LocalDateTime fromDate, LocalDateTime toDate, String ... tags);
 }

@@ -8,7 +8,7 @@ ko.applyBindings(new function RandogramViewModel() {
         return self.tags().length == 0;
     });
 
-    self.isSubscribed = ko.observable(false);
+    self.isFollowing = ko.observable(false);
     self.isSearchByDate = ko.observable(false);
 
     self.dateFrom = ko.observable();
@@ -27,44 +27,26 @@ ko.applyBindings(new function RandogramViewModel() {
     self.searchAction = function () {
 
         self.isLoading(true);
-        if(self.isSearchByDate()){
-            $.ajax({
-                url: "getImagesByTagsAndDate",
-                data: {
-                    tags: self.tags(),
-                    dateTimeFrom: !self.dateFrom() ? null : moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A"),
-                    dateTimeTo: !self.dateTo() ? null : moment(self.dateTo()).format("MM/DD/YYYY hh:mm A")
-                },
-                dataType: "json",
-                success: function (data) {
-                    self.images([]);
-                    pushImages(data);
-                    self.isLoading(false);
-                },
-                error: function () {
-                    alert("error");
-                    self.isLoading(false);
-                }
-            });
-        }else{
-            $.ajax({
-                url: "getImagesByTags",
-                data: {
-                    tags: self.tags(),
-                },
-                dataType: "json",
-                success: function (data) {
-                    self.images([]);
-                    pushImages(data);
-                    self.isLoading(false);
-                },
-                error: function () {
-                    alert("error");
-                    self.isLoading(false);
-                }
-            });
-        }
 
+        $.ajax({
+            url: "getImages",
+            data: {
+                tags: self.tags(),
+                following:self.isFollowing(),
+                dateTimeFrom: (self.isSearchByDate() ||!self.dateFrom()) ? null : moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A"),
+                dateTimeTo: (self.isSearchByDate() || !self.dateTo()) ? null : moment(self.dateTo()).format("MM/DD/YYYY hh:mm A")
+            },
+            dataType: "json",
+            success: function (data) {
+                self.images([]);
+                pushImages(data);
+                self.isLoading(false);
+            },
+            error: function () {
+                alert("error");
+                self.isLoading(false);
+            }
+        });
     };
 
     self.selectAction = function () {
@@ -81,36 +63,25 @@ ko.applyBindings(new function RandogramViewModel() {
         return !self.areTagsInvalid() && !self.isLoading();
     });
     self.loginAction = function(){
-        //alert("dateFrom: "+self.dateFrom());
-        //alert("dateTo: "+self.dateTo());
 
-        //$.ajax({
-        //    url: "login",
-        //    data: {
-        //
-        //    },
-        //    dataType: "text",
-        //    success: function (data) {
-        //        alert(data);
-        //    },
-        //    error: function () {
-        //        alert("error");
-        //    }
-        //});
+        $.ajax({
+            url: "login/handleToken",
+            data: {
+            },
+            dataType: "text",
+            success: function (data) {
+                alert(data);
+            },
+            error: function () {
+                alert("error");
+            }
+        });
     };
 
 });
 
 //Activate datetimepickers and make them linked to each other
-$(function () {
-    $('#dateTimeFrom').datetimepicker();
-    $('#dateTimeTo').datetimepicker({
-        useCurrent: false //Important! See issue #1075
-    });
-    $("#dateTimeFrom").on("dp.change", function (e) {
-        $('#dateTimeTo').data("DateTimePicker").minDate(e.date);
-    });
-    $("#dateTimeTo").on("dp.change", function (e) {
-        $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date);
-    });
-});
+$('#dateTimeFrom').datetimepicker();
+$('#dateTimeTo').datetimepicker({ useCurrent: false });
+$("#dateTimeFrom").on("dp.change", function (e) { $('#dateTimeTo').data("DateTimePicker").minDate(e.date); });
+$("#dateTimeTo").on("dp.change", function (e) { $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date); });
