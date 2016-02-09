@@ -19,10 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -87,7 +85,7 @@ public class IndexController {
         LocalDateTime fromDate = from==""? null: LocalDateTime.parse(from, formatter);
         LocalDateTime toDate = to==""? null: LocalDateTime.parse(to, formatter);
 
-        Set<Image> images = fetcher.fetchByTags(fromDate, toDate, tagsString);
+        List<Image> images = fetcher.fetchByTags(fromDate, toDate, tagsString);
 
         Gson gson = new Gson();
         return gson.toJson(images);

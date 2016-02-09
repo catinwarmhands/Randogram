@@ -20,7 +20,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     @Autowired
     private Instagram instagram;
 
-    private Set<Image> fetchByTag(String tag) {
+    private List<Image> fetchByTag(String tag) {
         TagMediaFeed feed;
         try {
             feed = instagram.getRecentMediaTags(tag);
@@ -28,7 +28,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
             throw new RuntimeException(e);
         }
 
-        Set<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toSet());
+        List<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toList());
         Pagination pagination = feed.getPagination();
 
         while (pagination.getNextMaxTagId() != null) {
@@ -45,18 +45,18 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         return imageUrls;
     }
 
-    private Set<Image> fetchByTag(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
+    private List<Image> fetchByTag(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
         return fetchByTag(tag)
                 .stream()
                 .filter(x -> (fromDate==null || x.getDate().isAfter(fromDate)) && (toDate==null || x.getDate().isBefore(toDate)))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<Image> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
+    public List<Image> fetchByTags(LocalDateTime fromDate, LocalDateTime toDate, String tag) {
 //        return Arrays.stream(tags)
 //                .map(tag -> fetchByTag(fromDate, toDate, tag))
 //                .flatMap(Collection::stream)
-//                .collect(Collectors.toSet());
+//                .collect(Collectors.toList());
 
         return fetchByTag(fromDate, toDate, tag);
     }
