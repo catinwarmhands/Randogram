@@ -1,8 +1,11 @@
 package com.sevak_avet.domain;
 
+import org.jinstagram.InstagramOembed;
 import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.User;
+import org.jinstagram.entity.oembed.OembedInformation;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.jinstagram.exceptions.InstagramException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -43,6 +46,7 @@ public class Image {
         Instant instant = Instant.ofEpochMilli(Long.parseLong(x.getCreatedTime()) * 1_000L);
         date = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
         unixTime = x.getCreatedTime();
+
     }
 
     public Image(String thumbnail, String low, String standard) {
@@ -131,4 +135,19 @@ public class Image {
     }
 
 
+    public String getUnixTime() {
+        return unixTime;
+    }
+
+    public void setUnixTime(String unixTime) {
+        this.unixTime = unixTime;
+    }
+
+    public int getCommentsAmount() {
+        return commentsAmount;
+    }
+
+    public void setCommentsAmount(int commentsAmount) {
+        this.commentsAmount = commentsAmount;
+    }
 }

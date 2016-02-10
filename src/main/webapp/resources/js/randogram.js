@@ -25,7 +25,6 @@ ko.applyBindings(new function RandogramViewModel() {
     };
 
     self.searchAction = function () {
-
         self.isLoading(true);
 
         $.ajax({
@@ -33,8 +32,8 @@ ko.applyBindings(new function RandogramViewModel() {
             data: {
                 tags: self.tags(),
                 following:self.isFollowing(),
-                dateTimeFrom: (self.isSearchByDate() ||!self.dateFrom()) ? null : moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A"),
-                dateTimeTo: (self.isSearchByDate() || !self.dateTo()) ? null : moment(self.dateTo()).format("MM/DD/YYYY hh:mm A")
+                dateTimeFrom: (self.isSearchByDate() && self.dateFrom()) ? moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A") : null,
+                dateTimeTo: (self.isSearchByDate() &&  self.dateTo()) ? moment(self.dateTo()).format("MM/DD/YYYY hh:mm A") : null,
             },
             dataType: "json",
             success: function (data) {
@@ -78,6 +77,23 @@ ko.applyBindings(new function RandogramViewModel() {
         });
     };
 
+    self.getEmbed = function(x){
+        //alert("hi");
+        return;
+        $.ajax({
+            url: "getEmbed",
+            data: {
+                link: x
+            },
+            dataType: "text",
+            success: function (data) {
+                alert(data)
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    };
 });
 
 //Activate datetimepickers and make them linked to each other
@@ -85,3 +101,23 @@ $('#dateTimeFrom').datetimepicker();
 $('#dateTimeTo').datetimepicker({ useCurrent: false });
 $("#dateTimeFrom").on("dp.change", function (e) { $('#dateTimeTo').data("DateTimePicker").minDate(e.date); });
 $("#dateTimeTo").on("dp.change", function (e) { $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date); });
+
+//$.ajax({
+//    url: "login/isLoginned",
+//    success: function (data) {
+//        if(data == "false"){
+//            $.ajax({
+//                url: "login/redirect",
+//                success: function (data) {
+//                    window.location = data;
+//                },
+//                error: function () {
+//                    alert("error");
+//                }
+//            });
+//        }
+//    },
+//    error: function () {
+//        alert("error");
+//    }
+//});

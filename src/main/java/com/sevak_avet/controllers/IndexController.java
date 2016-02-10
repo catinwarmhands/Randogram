@@ -5,6 +5,9 @@ import com.google.gson.Gson;
 import com.sevak_avet.fetcher.InstagramFetcher;
 import com.sevak_avet.util.TagHelper;
 import org.apache.log4j.Logger;
+import org.jinstagram.InstagramOembed;
+import org.jinstagram.entity.oembed.OembedInformation;
+import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +49,5 @@ public class IndexController {
 
         return new Gson().toJson(images);
     }
-
+    
 }

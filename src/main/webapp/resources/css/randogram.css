@@ -5,7 +5,7 @@ body{
 }
 
 .left-menu {
-    width: 250px;
+    width: 285px;
     float: left;
     background-color: #505050;
     position: fixed;
@@ -27,9 +27,12 @@ body{
     padding-left: 10px;
     padding-right: 10px;
 }
+.tags-section{
+    margin-bottom: 10px;
+}
 
-.tags-section, .date-section, .buttons-section{
-    margin-bottom: 20px;
+.date-section, .buttons-section{
+    margin-bottom: 15px;
 }
 
 .bootstrap-tagsinput {
@@ -44,9 +47,15 @@ body{
 }
 
 
-.search-button, .more-button, .chooseLucky-button{
+.search-button, .chooseLucky-button{
     padding:10px;
+    padding-left: 50px;
+    padding-right: 50px;
     text-align: center;
+}
+
+button{
+    width:100%;
 }
 
 
@@ -62,7 +71,7 @@ body{
 /*************************************************************right**************************************************/
 .right {
     padding:0;
-    margin-left: 250px;
+    margin-left: 285px;
 }
 .content{
     padding: 15px;

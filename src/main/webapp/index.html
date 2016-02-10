@@ -7,7 +7,7 @@
     <meta name="description" content="Random winner selector for instagram contests">
     <meta name="author" content="Randogram">
 
-    <title>Randogram</title>
+    <title>Randogram Login</title>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -84,9 +84,6 @@
             <div class="chooseLucky-button">
                 <button type="submit" name="chooseLucky" class="btn btn-lg btn-info" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
             </div>
-            <div class="chooseLucky-button">
-                <button type="submit" name="lgn" class="btn btn-lg btn-info" data-bind="click: loginAction">loginAction</button>
-            </div>
         </div>
     </div>
 </div>
@@ -105,8 +102,9 @@
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
             </div>
-            <div class="image-thumbnail">
-                <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
+            <div class="image-thumbnail" data-bind="attr: {href: link}">
+                <a><img data-bind="attr: {src: thumbnail}"></a>
+                <!--data-bind="attr: {href: link}"-->
             </div>
         </div>
     </div>

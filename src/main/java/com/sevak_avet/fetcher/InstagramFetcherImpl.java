@@ -50,6 +50,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     }
 
     private List<Image> fetchByTag(String tag, LocalDateTime fromDate, LocalDateTime toDate) {
+
         return fetchByTag(tag)
                 .stream()
                 .filter(x -> (fromDate==null || x.getDate().isAfter(fromDate)) && (toDate==null || x.getDate().isBefore(toDate)))

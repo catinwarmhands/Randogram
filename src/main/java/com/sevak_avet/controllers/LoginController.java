@@ -8,9 +8,12 @@ import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by savetisyan on 26/01/16
@@ -21,18 +24,27 @@ public class LoginController {
     @Autowired
     private InstagramService instagramService;
 
+
+    @RequestMapping(value = "/redirect", method = GET)
+    @ResponseBody
+    public String redirect(){
+        String authorizationUrl = instagramService.getAuthorizationUrl(null);
+
+        return authorizationUrl;
+    }
+
     @RequestMapping(value = "/handleToken")
     public String handleToken(HttpSession session, HttpServletRequest request) throws InstagramException {
 
         String code = request.getParameter("code");
         if (code == null) {
-            return "redirect:/index.html";
+            return "redirect:/";
         }
 
         Verifier verifier = new Verifier(code);
         Token accessToken = instagramService.getAccessToken(null, verifier);
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);
-        return "redirect:/index.html";
+        return "redirect:/";
     }
 }
