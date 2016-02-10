@@ -99,18 +99,34 @@ body{
 .image-cell:hover .image-info-bottom{
     display: block;
 }
+.image-cell:hover .image-info-top{
+    display: block;
+}
 
-.image-info-bottom{
+.image-info-top, .image-info-bottom{
     display: none;
     position: absolute;
-    bottom: 0px;
     left: 0px;
-    height: 30px;
+    height: 25px;
     width: 100%;
     color: #000000;
     background: rgb(255, 255, 255);
     background: rgba(255, 255, 255, 0.7);
-    text-align: right;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
+.image-info-top{
+    padding-top: 3px;
+    top: 0px;
+}
+.image-info-bottom{
+    bottom: 0px;
+}
+.comments{
+    float: left;
+}
+.likes, .time{
+    float: right;
+}
+
 

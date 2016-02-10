@@ -93,14 +93,14 @@
 
 <div class="right">
     <span data-bind="text: imagesCount"></span>
-    <a><br>tags: <span data-bind="text: tags"></span><br></a>
-    <a>from: <span data-bind="text: dateFrom"></span><br></a>
-    <a>to: <span data-bind="text: dateTo"></span><br></a>
-
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
+            <div class="image-info-top">
+                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+            </div>
             <div class="image-info-bottom">
-                <span data-bind="text: likes"></span><span>♡</span>
+                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                <div class="likes"><span data-bind="text: likes"></span>♡</div>
             </div>
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>

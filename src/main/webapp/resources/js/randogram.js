@@ -62,15 +62,15 @@ ko.applyBindings(new function RandogramViewModel() {
     self.isSearchButtonEnabled = ko.computed (function () {
         return !self.areTagsInvalid() && !self.isLoading();
     });
+    self.getMoment = function(unixTime){
+        return moment(unixTime, "X").fromNow();
+    };
     self.loginAction = function(){
 
         $.ajax({
-            url: "login/handleToken",
-            data: {
-            },
-            dataType: "text",
+            url: "login/redirect",
             success: function (data) {
-                alert(data);
+                window.location = data;
             },
             error: function () {
                 alert("error");
