@@ -23,6 +23,8 @@ public class Image {
     private List<String> tags;
     private String caption;
     private String userUrl;
+    private int commentsAmount;
+    private String unixTime;
 
 
     public Image(MediaFeedData x) {
@@ -36,9 +38,11 @@ public class Image {
         tags = x.getTags();
         caption = x.getCaption().getText();
         userUrl = "https://www.instagram.com/"+user.getUserName();
+        commentsAmount = x.getComments().getCount();
 
         Instant instant = Instant.ofEpochMilli(Long.parseLong(x.getCreatedTime()) * 1_000L);
         date = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        unixTime = x.getCreatedTime();
     }
 
     public Image(String thumbnail, String low, String standard) {

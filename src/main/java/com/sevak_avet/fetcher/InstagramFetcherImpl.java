@@ -67,14 +67,14 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         }
 
         if(tags.size() > 1) {
-            filterByTags(tags, imagesSet);
+            filterByTagsConjunction(tags, imagesSet);
         }
 
         ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
         return imagesList;
     }
 
-    private void filterByTags(ArrayList<String> tags, LinkedHashSet<Image> imagesSet) {
+    private void filterByTagsConjunction(ArrayList<String> tags, LinkedHashSet<Image> imagesSet) {
         Iterator<Image> i = imagesSet.iterator();
 
         while (i.hasNext()) {
@@ -121,6 +121,10 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     }
 
     private String getSmallestTag(ArrayList<String> tags){
+        if(tags.size() == 1){
+            return tags.get(0);
+        }
+
         String minTag = null;
         long minAmount = Long.MAX_VALUE;
 
