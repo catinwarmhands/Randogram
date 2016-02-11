@@ -34,7 +34,7 @@ ko.applyBindings(new function RandogramViewModel() {
 
     var self = this;
 
-    self.tags = ko.observable("griddynamicssaratov,randogram_test");
+    self.tags = ko.observable("griddynamicssaratov");
 
     self.areTagsInvalid = ko.computed (function () {
         //return false;
@@ -44,17 +44,37 @@ ko.applyBindings(new function RandogramViewModel() {
     self.isFollowing = ko.observable(false);
     self.isSearchByDate = ko.observable(false);
 
+    self.isSearchDone = ko.observable(false);
+
     self.dateFrom = ko.observable();
     self.dateTo = ko.observable();
 
+    self.winnersAmount = ko.observable(1);
+    self.usersAndPosts = ko.observableArray([]);
+    self.winners = ko.observableArray([]);
+
     self.images = ko.observableArray([]);
-    self.imagesCount = ko.computed (function () {
-        return self.images().length==1 ? "Winner!" : self.images().length+" images found";
+    self.searchInfo = ko.computed (function () {
+        return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
     });
     self.isLoading = ko.observable(false);
 
     var pushImages = function (images) {
         self.images(self.images().concat(images));
+    };
+
+    var setUsers = function(){
+        var users = new Set(self.images().map(function(image){return image.user.username}));
+        var usersArray = Array.from(users);
+
+        //self.users(usersArray);
+
+        var usersPairs = usersArray.map(function(x){return {username: x, posts: []}});
+        usersPairs.forEach(function(pair){
+            pair.posts = self.images().filter(function(image){return image.user.username == pair.username;});
+        });
+
+        self.usersAndPosts(usersPairs);
     };
 
     self.searchAction = function () {
@@ -72,7 +92,9 @@ ko.applyBindings(new function RandogramViewModel() {
             success: function (data) {
                 self.images([]);
                 pushImages(data);
+                setUsers();
                 self.isLoading(false);
+                self.isSearchDone(true);
             },
             error: function () {
                 alert("error");
@@ -81,11 +103,30 @@ ko.applyBindings(new function RandogramViewModel() {
         });
     };
 
+    var shuffle = function (array) {
+        var m = array.length, t, i;
+        while (m) {
+            i = Math.floor(Math.random() * m--);
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+        }
+        return array;
+    };
+    var random = function(min, max){
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    var randomElement = function(arr){
+        return arr[random(0, arr.length)];
+    }
+    var selectLuckyUsers = function(){
+        return shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
+    };
     self.selectAction = function () {
-        var max = self.images().length;
-        var min = 0;
-        var image = self.images()[Math.floor(Math.random() * (max - min)) + min];
-        self.images([image]);
+        var luckyUsers = selectLuckyUsers();
+
+        var winnerPosts = luckyUsers.map(function(x){return randomElement(x.posts)});
+        self.winners(winnerPosts);
     };
 
     self.isLuckyButtonEnabled = ko.computed (function () {

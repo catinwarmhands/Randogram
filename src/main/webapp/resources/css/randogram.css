@@ -61,16 +61,8 @@ body{
 button{
     width:100%;
 }
-
-
-.control-label {
-    display: inline-block;
-    vertical-align: top;
-    float: none;
-}
-
-#fountainG {
-    vertical-align: middle;
+.search-info{
+    color:white;
 }
 /*************************************************************right**************************************************/
 .right {
@@ -78,7 +70,7 @@ button{
     margin-left: 285px;
 }
 .content{
-    /*padding: 15px;*/
+    padding-top: 15px;
     text-align: center;
 }
 
@@ -89,6 +81,7 @@ button{
     margin: 15px;
     background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    font-size: 16px;
 }
 .image-thumbnail {
     padding: 3px;

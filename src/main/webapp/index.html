@@ -36,9 +36,11 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="resources/css/randogram.css">
 
-    <!--Loading animation-->
-    <link rel="stylesheet" href="resources/css/lib/animate.css">
-    <link rel="stylesheet" href="resources/css/lib/loading-animation-style.css">
+    <!--Ladda-->
+    <link rel="stylesheet" href="resources/css/lib/ladda.min.css">
+    <script src="resources/js/lib/spin.min.js"></script>
+    <script src="resources/js/lib/ladda.min.js"></script>
+    <script src="resources/js/ladda-binding.js"></script>
 </head>
 <body>
 <div class="left-menu">
@@ -51,7 +53,7 @@
         </div>
 
         <div class="following-section">
-            <label for="sub">Following GD:</label>
+            <label for="sub">Only GDS followers:</label>
             <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
         </div>
 
@@ -59,7 +61,7 @@
             <label for="date">Search by date:</label>
             <input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">
 
-            <div class="date-fields" data-bind="visible: isSearchByDate()">
+            <div class="date-fields" data-bind="visible: isSearchByDate">
                 <label for="dateTimeFrom">From:</label>
                 <div class="form-group">
                     <div class="input-group date" id="dateTimeFrom" data-bind="datetimepicker: dateFrom">
@@ -78,17 +80,42 @@
 
         <div class="buttons-section">
             <div class="search-button">
-                <button type="submit" name="search" class="btn btn-lg btn-success" data-bind="enable: isSearchButtonEnabled, click: searchAction">Search</button>
+                <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
             </div>
             <div class="chooseLucky-button">
-                <button type="submit" name="chooseLucky" class="btn btn-lg btn-info" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
+                <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
             </div>
+        </div>
+        <div class="search-info" data-bind="visible: isSearchDone">
+            <span data-bind="text: searchInfo"></span>
+        </div>
+        <div class="winners-amount" data-bind="visible: isSearchDone">
+            <label for="winners-amount-field">Winners amount:</label>
+            <input type="text" class="form-control" data-bind="value: winnersAmount" id="winners-amount-field"/>
         </div>
     </div>
 </div>
 
 <div class="right">
-    <span data-bind="text: imagesCount"></span>
+
+    <div class="winners" data-bind="foreach: winners">
+        <div class="image-cell">
+            <div class="image-info-top">
+                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+            </div>
+            <div class="image-info-bottom">
+                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                <div class="likes"><span data-bind="text: likes"></span>♡</div>
+            </div>
+            <div class="user-avatar">
+                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+            </div>
+            <div class="image-thumbnail">
+                <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-top">
@@ -101,22 +128,10 @@
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
             </div>
-            <div class="image-thumbnail" data-bind="attr: {href: link}, click: $parent.getEmbed">
-                <a><img data-bind="attr: {src: thumbnail}"></a>
-                <!--data-bind="attr: {href: link}"-->
+            <div class="image-thumbnail">
+                <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
             </div>
         </div>
-    </div>
-    <!--loading animation-->
-    <div id="fountainG" data-bind="visible: isLoading">
-        <div id="fountainG_1" class="fountainG"></div>
-        <div id="fountainG_2" class="fountainG"></div>
-        <div id="fountainG_3" class="fountainG"></div>
-        <div id="fountainG_4" class="fountainG"></div>
-        <div id="fountainG_5" class="fountainG"></div>
-        <div id="fountainG_6" class="fountainG"></div>
-        <div id="fountainG_7" class="fountainG"></div>
-        <div id="fountainG_8" class="fountainG"></div>
     </div>
 </div>
 <div class="image-preview">
