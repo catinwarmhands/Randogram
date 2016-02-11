@@ -2,14 +2,18 @@ body{
     padding: 0;
     font-family: Geneva, Arial, Helvetica, sans-serif;
     font-size: 18px;
+    background-image: url("../images/background_linen.png");
+    background-repeat:repeat;
 }
 
 .left-menu {
     width: 285px;
     float: left;
-    background-color: #505050;
     position: fixed;
     height: 100%;
+    background-color: #26262E;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+
 }
 .left-menu label{
     color: white;
@@ -74,13 +78,14 @@ button{
     margin-left: 285px;
 }
 .content{
-    padding: 15px;
+    /*padding: 15px;*/
+    text-align: center;
 }
 
 .image-cell{
     position: relative;
     display: inline-block;
-    border: 1px ridge;
+    border: 1px ridge white;
     margin: 15px;
     background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);

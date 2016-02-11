@@ -1,11 +1,16 @@
 html, body {
     height: 100%;
 }
+body{
+    background-image: url("../images/background_linen.png");
+    background-repeat:repeat;
+}
 .main {
-    background-color: #505050;
     margin: 0 auto;
     width: 370px;
     height: 100%;
+    background-color: #29292E;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 .logo{
     padding: 10px;
