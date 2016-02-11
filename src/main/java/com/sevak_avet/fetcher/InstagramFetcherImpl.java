@@ -2,6 +2,8 @@ package com.sevak_avet.fetcher;
 
 import com.sevak_avet.domain.Image;
 import org.jinstagram.Instagram;
+import org.jinstagram.auth.model.Token;
+import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.entity.common.Pagination;
 import org.jinstagram.entity.tags.TagInfoData;
 import org.jinstagram.entity.tags.TagInfoFeed;
@@ -24,7 +26,11 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     @Autowired
     private Instagram instagram;
 
-    private List<Image> fetchByTag(String tag) {
+    @Autowired
+    private String secret;
+
+    private List<Image> fetchByTag(String tag ) {
+
         TagMediaFeed feed;
         try {
             feed = instagram.getRecentMediaTags(tag);
@@ -57,19 +63,32 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
                 .collect(Collectors.toList());
     }
 
-    public List<Image> fetchByTags(ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate) {
+    private void setToken(String token){
+
+        Token accessToken = null;
+        try{
+            accessToken = new Token(token, secret);
+        }catch(Exception e){
+            throw new RuntimeException();
+        }
+
+        try{
+            instagram.setAccessToken(accessToken);
+        }catch(Exception e){
+            throw new RuntimeException();
+        }
+
+    }
+////this method calls from IndexController
+    public List<Image> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate) {
+
+        setToken(token);
 
         LinkedHashSet<Image> imagesSet = new LinkedHashSet<>();
-
         imagesSet.addAll(fetchByTag(getSmallestTag(tags), fromDate, toDate));
 
-        if(isFollowing) {
-            filterByFollowing(imagesSet);
-        }
-
-        if(tags.size() > 1) {
-            filterByTagsConjunction(tags, imagesSet);
-        }
+        if(isFollowing) {filterByFollowing(imagesSet);}
+        if(tags.size() > 1) {filterByTagsConjunction(tags, imagesSet);}
 
         ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
         return imagesList;

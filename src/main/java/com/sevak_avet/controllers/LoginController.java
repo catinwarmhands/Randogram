@@ -21,6 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+
     @Autowired
     private InstagramService instagramService;
 
@@ -45,6 +46,6 @@ public class LoginController {
         Token accessToken = instagramService.getAccessToken(null, verifier);
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);
-        return "redirect:/";
+        return "redirect:/index.html?accesToken="+accessToken.getToken();
     }
 }

@@ -48,7 +48,6 @@
         <div class="tags-section">
             <label for="tags">Tags:</label>
             <input type="text" class="form-control" data-bind="value: tags" data-role="tagsinput" id="tags"/>
-            <div data-bind="visible: areTagsInvalid" style="color: red">Tag field cannot be empty!</div>
         </div>
 
         <div class="following-section">
@@ -102,7 +101,7 @@
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
             </div>
-            <div class="image-thumbnail" data-bind="attr: {href: link}">
+            <div class="image-thumbnail" data-bind="attr: {href: link}, click: $parent.getEmbed">
                 <a><img data-bind="attr: {src: thumbnail}"></a>
                 <!--data-bind="attr: {href: link}"-->
             </div>
@@ -119,6 +118,9 @@
         <div id="fountainG_7" class="fountainG"></div>
         <div id="fountainG_8" class="fountainG"></div>
     </div>
+</div>
+<div class="image-preview">
+
 </div>
 <!--Custom scripts for this template-->
 <script src="resources/js/randogram.js"></script>

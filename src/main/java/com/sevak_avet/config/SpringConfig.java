@@ -30,6 +30,11 @@ public class SpringConfig {
     }
 
     @Bean
+    public String secret() {
+        return SECRET;
+    }
+
+    @Bean
     public InstagramService instagramService() {
         return new InstagramAuthService()
                 .apiKey(CLIENT_ID)

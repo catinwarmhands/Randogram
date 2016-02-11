@@ -30,7 +30,8 @@ public class IndexController {
 
     @RequestMapping(value = "/getImages", method = GET)
     @ResponseBody
-    public String getImages (@RequestParam("tags") String tagsString,
+    public String getImages (@RequestParam("accesToken") String accesToken,
+                             @RequestParam("tags") String tagsString,
                              @RequestParam("following") boolean isFollowing,
                              @RequestParam("dateTimeFrom") String from,
                              @RequestParam("dateTimeTo") String to) {
@@ -45,7 +46,7 @@ public class IndexController {
             return null;
         }
 
-        List<Image> images = fetcher.fetchByTags(tags, isFollowing, fromDate, toDate);
+        List<Image> images = fetcher.fetchByTags(accesToken, tags, isFollowing, fromDate, toDate);
 
         return new Gson().toJson(images);
     }
