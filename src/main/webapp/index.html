@@ -83,7 +83,7 @@
                 <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
             </div>
             <div class="chooseLucky-button">
-                <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
+                <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled" data-toggle="modal" data-target="#winnersModal">Who is lucky?</button>
             </div>
         </div>
         <div class="search-info" data-bind="visible: isSearchDone">
@@ -97,25 +97,6 @@
 </div>
 
 <div class="right">
-
-    <div class="winners" data-bind="foreach: winners">
-        <div class="image-cell">
-            <div class="image-info-top">
-                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
-            </div>
-            <div class="image-info-bottom">
-                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
-                <div class="likes"><span data-bind="text: likes"></span>♡</div>
-            </div>
-            <div class="user-avatar">
-                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
-            </div>
-            <div class="image-thumbnail">
-                <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
-            </div>
-        </div>
-    </div>
-    <br><br><br>
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-top">
@@ -134,9 +115,40 @@
         </div>
     </div>
 </div>
-<div class="image-preview">
 
+<div id="winnersModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Winners!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="winners" data-bind="foreach: winners">
+                    <div class="winner">
+                        <div class="head-info">
+                            <div class="avatar">
+                                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                            </div>
+                            <div class="text-info">
+                                <div class="fullname">
+                                    <span data-bind="text: user.full_name"></span>
+                                </div>
+                                <div class="username">
+                                    <span data-bind="text: user.username"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
+                        </div> <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <!--Custom scripts for this template-->
 <script src="resources/js/randogram.js"></script>
 </body>
