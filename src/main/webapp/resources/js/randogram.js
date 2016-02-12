@@ -109,10 +109,10 @@ ko.applyBindings(new function RandogramViewModel() {
     };
     var random = function(min, max){
         return Math.floor(Math.random() * (max - min)) + min;
-    }
+    };
     var randomElement = function(arr){
         return arr[random(0, arr.length)];
-    }
+    };
     var selectLuckyUsers = function(){
         //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
         return shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
@@ -134,20 +134,14 @@ ko.applyBindings(new function RandogramViewModel() {
         return moment(unixTime, "X").fromNow();
     };
 
-    self.previews = ko.observableArray([]);
+    self.preview = ko.observableArray();
 
-    self.isPreviewsVisible = ko.computed (function () {
-        return self.previews().length != 0;
-    });
-    self.pushToPreviews = function(){
-        if(self.isLoading()){
+    self.setPreview = function() {
+        if (self.isLoading()) {
             return;
         }
-        self.previews().pushVal(this);
-        alert(JSON.stringify(this));
-        return;
-    };
-
+        self.preview([this]);
+    }
     self.accesToken = ko.observable();
 
     self.handleToken = ko.computed (function(){

@@ -119,7 +119,8 @@
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
             </div>
             <div class="image-thumbnail">
-                <a data-bind="attr: {href: link}"><img data-bind="attr: {src: thumbnail}"></a>
+                <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
+                <!--data-bind="attr: {href: link}"-->
             </div>
         </div>
     </div>
@@ -154,6 +155,35 @@
                             <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
                         </div> <hr>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="previewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="instlink">
+            <div class="winners" data-bind="foreach: preview">
+                <div class="winner" id="preview">
+                    <div class="head-info">
+                        <div class="avatar">
+                            <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                        </div>
+                        <a data-bind="attr: {href: userUrl}">
+                            <div class="text-info">
+                                <div class="fullname">
+                                    <a data-bind="text: user.full_name, attr: {href: userUrl}"></a>
+                                </div>
+                                <div class="username">
+                                    <a data-bind="text: user.username, attr: {href: userUrl}"></a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="image">
+                        <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
+                    </div> <hr>
                 </div>
             </div>
         </div>
