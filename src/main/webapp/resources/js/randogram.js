@@ -29,7 +29,29 @@ var test = {
     userUrl: "https://www.instagram.com/cjjonny"
 };
 
-
+ko.bindingHandlers.numeric = {
+    init: function (element, valueAccessor) {
+        $(element).on("keydown", function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    // Allow: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: . ,
+                (event.keyCode == 188 || event.keyCode == 190 || event.keyCode == 110) ||
+                    // Allow: home, end, left, right
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+};
 ko.applyBindings(new function RandogramViewModel() {
 
     var self = this;
@@ -54,10 +76,36 @@ ko.applyBindings(new function RandogramViewModel() {
     self.winners = ko.observableArray([]);
 
     self.images = ko.observableArray([]);
+
+    self.winnersAmountPlus = function () {
+        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
+        if(self.winnersAmount() < self.usersAndPosts().length){
+            self.winnersAmount(self.winnersAmount()+1);
+        }else if(self.usersAndPosts().length != 0){
+            self.winnersAmount(self.usersAndPosts().length);
+        }
+    };
+    self.winnersAmountMinus = function () {
+        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
+        if(self.winnersAmount() > 1){
+            self.winnersAmount(self.winnersAmount()-1);
+        }else{
+            self.winnersAmount(1);
+        }
+    };
     self.searchInfo = ko.computed (function () {
         return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
     });
     self.isLoading = ko.observable(false);
+
+    self.fixRange = function(){
+        if(self.winnersAmount() < 0){
+            self.winnersAmount(1);
+        }
+        if(self.winnersAmount() > self.usersAndPosts().length){
+            self.winnersAmount(self.usersAndPosts().length);
+        }
+    };
 
     var pushImages = function (images) {
         self.images(self.images().concat(images));
@@ -120,6 +168,7 @@ ko.applyBindings(new function RandogramViewModel() {
         return arr[random(0, arr.length)];
     }
     var selectLuckyUsers = function(){
+        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
         return shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
     };
     self.selectAction = function () {
@@ -177,6 +226,7 @@ ko.applyBindings(new function RandogramViewModel() {
 //Activate datetimepickers and make them linked to each other
 $('#dateTimeFrom').datetimepicker();
 $('#dateTimeTo').datetimepicker({ useCurrent: false });
-$("#dateTimeFrom").on("dp.change", function (e) { $('#dateTimeTo').data("DateTimePicker").minDate(e.date); });
-$("#dateTimeTo").on("dp.change", function (e) { $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date); });
+$("#dateTimeFrom").on("dp.change", function (e) { $('#dateTimeTo').data("DateTimePicker").minDate(e.date);});
+$("#dateTimeTo").on("dp.change", function (e) { $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date);});
+
 

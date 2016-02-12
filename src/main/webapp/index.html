@@ -41,6 +41,7 @@
     <script src="resources/js/lib/spin.min.js"></script>
     <script src="resources/js/lib/ladda.min.js"></script>
     <script src="resources/js/ladda-binding.js"></script>
+
 </head>
 <body>
 <div class="left-menu">
@@ -78,20 +79,26 @@
             </div>
         </div>
 
-        <div class="buttons-section">
-            <div class="search-button">
-                <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
+        <div class="search-button">
+            <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
+        </div>
+        <div class="chooseLucky-section" data-bind="visible: isSearchDone">
+            <div class="search-info">
+                <span data-bind="text: searchInfo"></span>
+            </div>
+            <div class="winners-amount" >
+                <label for="winners-amount-field">Winners amount:</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" data-bind="numeric, value: winnersAmount" id="winners-amount-field"/>
+                        <span class="input-group-addon"data-bind="click: winnersAmountMinus"><span class="glyphicon glyphicon-minus"></span></span>
+                        <span class="input-group-addon"data-bind="click: winnersAmountPlus"><span class="glyphicon glyphicon-plus"></span></span>
+                    </div>
+                </div>
             </div>
             <div class="chooseLucky-button">
                 <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled" data-toggle="modal" data-target="#winnersModal">Who is lucky?</button>
             </div>
-        </div>
-        <div class="search-info" data-bind="visible: isSearchDone">
-            <span data-bind="text: searchInfo"></span>
-        </div>
-        <div class="winners-amount" data-bind="visible: isSearchDone">
-            <label for="winners-amount-field">Winners amount:</label>
-            <input type="text" class="form-control" data-bind="value: winnersAmount" id="winners-amount-field"/>
         </div>
     </div>
 </div>
@@ -104,7 +111,7 @@
             </div>
             <div class="image-info-bottom">
                 <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
-                <div class="likes"><span data-bind="text: likes"></span>♡</div>
+                <div class="likes"><span data-bind="text: likes"></span>♥</div>
             </div>
             <div class="user-avatar">
                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
@@ -125,19 +132,21 @@
             </div>
             <div class="modal-body">
                 <div class="winners" data-bind="foreach: winners">
-                    <div class="winner">
+                    <div class="winner" id="winner">
                         <div class="head-info">
                             <div class="avatar">
                                 <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
                             </div>
+                            <a data-bind="attr: {href: userUrl}">
                             <div class="text-info">
                                 <div class="fullname">
-                                    <span data-bind="text: user.full_name"></span>
+                                    <a data-bind="text: user.full_name, attr: {href: userUrl}"></a>
                                 </div>
                                 <div class="username">
-                                    <span data-bind="text: user.username"></span>
+                                    <a data-bind="text: user.username, attr: {href: userUrl}"></a>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         <div class="image">
                             <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>

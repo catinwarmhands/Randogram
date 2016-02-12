@@ -57,13 +57,21 @@ body{
     padding-left: 50px;
     padding-right: 50px;
     text-align: center;
+    margin-bottom: 15px;
 }
 
-.buttons-section button{
+.search-button button{
     width:100%;
 }
+.chooseLucky-button button{
+    width:100%;
+}
+
 .search-info{
     color:white;
+}
+.winners-amount{
+    margin-bottom: 15px;
 }
 /*************************************************************right**************************************************/
 .right {
@@ -160,6 +168,14 @@ body{
     height: 150px;
 }
 
+.winner{
+    -webkit-transition: opacity 2s ease-in;
+    -moz-transition: opacity 2s ease-in;
+    -o-transition: opacity 2s ease-in;
+    -ms-transition: opacity 2s ease-in;
+    transition: opacity 2s ease-in;
+}
+
 .winner .head-info{
     margin-bottom: 20px;
     text-align: left;
@@ -170,6 +186,7 @@ body{
     display: inline-block;
     width: 450px;
     float: right;
+    color:black;
 }
 
 .winner{
