@@ -60,27 +60,51 @@
             <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
         </div>
 
-        <div class="date-section">
-            <label for="date">Search by date:</label>
-            <input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">
+        <!--<div class="date-section">-->
+            <!--<label for="date">Search by date:</label>-->
+            <!--<input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">-->
 
-            <div class="date-fields" data-bind="visible: isSearchByDate">
-                <label for="dateTimeFrom">From:</label>
-                <div class="form-group">
-                    <div class="input-group date" id="dateTimeFrom" data-bind="datetimepicker: dateFrom">
-                        <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
-                    </div>
-                </div>
+            <!--<div class="date-fields" data-bind="visible: isSearchByDate">-->
+                <!--<label for="dateTimeFrom">From:</label>-->
+                <!--<div class="form-group">-->
+                    <!--<div class="input-group date" id="dateTimeFrom" data-bind="datetimepicker: dateFrom">-->
+                        <!--<input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <label for="dateTimeTo">To:</label>
-                <div class="form-group">
-                    <div class="input-group date" id="dateTimeTo" data-bind="datetimepicker: dateTo">
-                        <input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                <!--<label for="dateTimeTo">To:</label>-->
+                <!--<div class="form-group">-->
+                    <!--<div class="input-group date" id="dateTimeTo" data-bind="datetimepicker: dateTo">-->
+                        <!--<input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="advanced-section">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">Advanced options</a></h4></div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <div class="dropdown">
+                                Search by
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span data-bind="text: dateFilterType"></span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterAvailableStatus">
+                                    <li data-bind="css: {'disabled' : statusName==$parent.dateFilterType}">
+                                        <a href="#" data-bind="click: $parent.dateFilterType(statusName)"><span data-bind="text: statusName"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="search-button">
             <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
         </div>
@@ -107,6 +131,7 @@
 
 <div class="right">
     <div class="content" data-bind="foreach: images">
+        <div class="fade-in">
         <div class="image-cell">
             <div class="image-info-top">
                 <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
@@ -123,9 +148,11 @@
                 <!--data-bind="attr: {href: link}"-->
             </div>
         </div>
+        </div>
     </div>
 </div>
 
+<!--placeholder, will be removed-->
 <div id="winnersModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -185,8 +212,9 @@
                         <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
                     </div>
                     <div class="image-info">
+                        <hr>
                         <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
-                        <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                        <div class="comments"><span data-bind="text: commentsAmount"></span>☰</div>
                         <div class="likes"><span data-bind="text: likes"></span>♥</div>
                         <hr>
                         <div class="caption"><span data-bind="text: caption"></span></div>

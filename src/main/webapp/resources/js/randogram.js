@@ -1,3 +1,4 @@
+//arrays helpers
 function shuffle(array) {
     var m = array.length, t, i;
     while (m) {
@@ -17,6 +18,7 @@ function randomElement(arr){
     return arr[random(0, arr.length)];
 }
 
+//Knockout
 ko.applyBindings(new function RandogramViewModel() {
     var self = this;
 
@@ -34,6 +36,17 @@ ko.applyBindings(new function RandogramViewModel() {
 
     //fields
     self.winnersAmount = ko.observable(1);
+
+    //date filter type
+    self.dateFilterType = ko.observable("Today");
+    self.dateFilterAvailableStatus = [
+        { statusName: "Today" },
+        { statusName: "Last week" },
+        { statusName: "Last month" },
+        { statusName: "All time" },
+        { statusName: "Specify day" },
+        { statusName: "Specify interval" }
+    ];
 
     //date fields
     self.dateFrom = ko.observable();
@@ -81,7 +94,6 @@ ko.applyBindings(new function RandogramViewModel() {
         self.usersAndPosts(usersPairs);
     };
 
-
     //winnersAmount +/- buttons
     self.winnersAmountPlus = function () {
         if(self.winnersAmount() < self.usersAndPosts().length){
@@ -102,6 +114,7 @@ ko.applyBindings(new function RandogramViewModel() {
     });
 
     //actions
+    //search
     self.searchAction = function () {
         self.isLoading(true);
         $.ajax({
@@ -128,6 +141,7 @@ ko.applyBindings(new function RandogramViewModel() {
         });
     };
 
+    //select winners action
     self.selectAction = function () {
         var luckyUsers = shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
 
