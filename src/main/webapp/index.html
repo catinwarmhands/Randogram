@@ -164,8 +164,8 @@
 <div id="previewModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content" id="instlink">
-            <div class="winners" data-bind="foreach: preview">
-                <div class="winner" id="preview">
+            <div class="previews" data-bind="foreach: preview">
+                <div class="preview" id="preview">
                     <div class="head-info">
                         <div class="avatar">
                             <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
@@ -183,7 +183,14 @@
                     </div>
                     <div class="image">
                         <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
-                    </div> <hr>
+                    </div>
+                    <div class="image-info">
+                        <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+                        <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                        <div class="likes"><span data-bind="text: likes"></span>♥</div>
+                        <hr>
+                        <div class="caption"><span data-bind="text: caption"></span></div>
+                    </div>
                 </div>
             </div>
         </div>

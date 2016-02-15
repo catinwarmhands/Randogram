@@ -138,21 +138,21 @@ body{
 .image-info-bottom{
     bottom: 0px;
 }
-.comments{
+.image-cell .comments{
     float: left;
 }
-.likes, .time{
+.image-cell .likes, .image-cell .time{
     float: right;
 }
 
-/*******************************************************winners modal**************************************************/
-#winnersModal .modal-dialog{
+/*******************************************************preview modal**************************************************/
+#previewModal .modal-dialog{
     width: 700px;
 }
-#winnersModal .modal-body{
+#previewModal .modal-content{
     text-align: center;
 }
-.winner .avatar{
+.preview .avatar{
     width: 158px;
     height: 158px;
     /* -webkit-border-radius: 99em; */
@@ -160,27 +160,20 @@ body{
     border-radius: 99em;
     border: 4px solid #eee;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    -moz-border-radius: 99em;
     display: inline-block;
 }
-.winner .avatar img{
+.preview .avatar img{
     width: 150px;
     height: 150px;
 }
 
-.winner{
-    -webkit-transition: opacity 2s ease-in;
-    -moz-transition: opacity 2s ease-in;
-    -o-transition: opacity 2s ease-in;
-    -ms-transition: opacity 2s ease-in;
-    transition: opacity 2s ease-in;
-}
 
-.winner .head-info{
+.preview .head-info{
+    /*margin-top: 15px;*/
     margin-bottom: 20px;
     text-align: left;
 }
-.winner .text-info{
+.preview .text-info{
     /*width: 150px;*/
     /*height: 150px;*/
     display: inline-block;
@@ -189,24 +182,40 @@ body{
     color:black;
 }
 
-.winner{
+.preview{
     display:inline-block;
-    margin-bottom: 10px;
+    padding: 20px;
+    /*margin-bottom: -15px;*/
 }
-.winner .fullname{
+.preview .fullname{
     margin-top: 10px;
     font-size: 40px;
 }
 
-.winner .username{
+.preview .username{
     font-size: 30px;
 }
 
-.winner .image{
+.preview .image{
 
     border: 5px solid #eee;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-.winner .image img{
+.preview .image img{
     width: 640px;
+}
+
+.preview .time, .preview .likes,.preview .comments{
+    display: inline-block;
+}
+
+/*.preview .image-info{*/
+    /*text-align: left;*/
+/*}*/
+
+.preview .time{
+    float: left;
+}
+.preview .likes{
+    float: right;
 }
