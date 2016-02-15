@@ -1,67 +1,77 @@
-ko.applyBindings(new function RandogramViewModel() {
+function shuffle(array) {
+    var m = array.length, t, i;
+    while (m) {
+        i = Math.floor(Math.random() * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
+    return array;
+}
 
+function random(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function randomElement(arr){
+    return arr[random(0, arr.length)];
+}
+
+ko.applyBindings(new function RandogramViewModel() {
     var self = this;
 
+    //tags
     self.tags = ko.observable("griddynamicssaratov");
 
+    //tags helpers
     self.areTagsInvalid = ko.computed (function () {
-        //return false;
         return self.tags().length == 0;
     });
 
+    //checkboxes
     self.isFollowing = ko.observable(false);
     self.isSearchByDate = ko.observable(false);
 
-    self.isSearchDone = ko.observable(false);
+    //fields
+    self.winnersAmount = ko.observable(1);
 
+    //date fields
     self.dateFrom = ko.observable();
     self.dateTo = ko.observable();
 
-    self.winnersAmount = ko.observable(1);
+    //arrays
     self.usersAndPosts = ko.observableArray([]);
     self.winners = ko.observableArray([]);
-
     self.images = ko.observableArray([]);
+    self.preview = ko.observableArray();
 
-    self.winnersAmountPlus = function () {
-        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
-        if(self.winnersAmount() < self.usersAndPosts().length){
-            self.winnersAmount(self.winnersAmount()+1);
-        }else if(self.usersAndPosts().length != 0){
-            self.winnersAmount(self.usersAndPosts().length);
-        }
-    };
-    self.winnersAmountMinus = function () {
-        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
-        if(self.winnersAmount() > 1){
-            self.winnersAmount(self.winnersAmount()-1);
-        }else{
-            self.winnersAmount(1);
-        }
-    };
-    self.searchInfo = ko.computed (function () {
-        return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
-    });
+    //statements
+    self.isSearchDone = ko.observable(false);
     self.isLoading = ko.observable(false);
 
-    self.fixRange = function(){
-        if(self.winnersAmount() < 0){
-            self.winnersAmount(1);
+    self.isLuckyButtonEnabled = ko.computed (function () {
+        return !self.isLoading() && self.images().length>1;
+    });
+
+    self.isSearchButtonEnabled = ko.computed (function () {
+        return !self.areTagsInvalid() && !self.isLoading();
+    });
+
+    //arrays helpers
+    self.setPreview = function() {
+        if (self.isLoading()) {
+            return;
         }
-        if(self.winnersAmount() > self.usersAndPosts().length){
-            self.winnersAmount(self.usersAndPosts().length);
-        }
+        self.preview([this]);
     };
 
     var pushImages = function (images) {
         self.images(self.images().concat(images));
     };
 
-    var setUsers = function(){
+    var setUsersAndPosts = function(){
         var users = new Set(self.images().map(function(image){return image.user.username}));
         var usersArray = Array.from(users);
-
-        //self.users(usersArray);
 
         var usersPairs = usersArray.map(function(x){return {username: x, posts: []}});
         usersPairs.forEach(function(pair){
@@ -71,6 +81,27 @@ ko.applyBindings(new function RandogramViewModel() {
         self.usersAndPosts(usersPairs);
     };
 
+
+    //winnersAmount +/- buttons
+    self.winnersAmountPlus = function () {
+        if(self.winnersAmount() < self.usersAndPosts().length){
+            self.winnersAmount(self.winnersAmount()+1);
+        }else if(self.usersAndPosts().length != 0){
+            self.winnersAmount(self.usersAndPosts().length);
+        }
+    };
+    self.winnersAmountMinus = function () {
+        if(self.winnersAmount() > 1){
+            self.winnersAmount(self.winnersAmount()-1);
+        }else{
+            self.winnersAmount(1);
+        }
+    };
+    self.searchInfo = ko.computed (function () {
+        return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
+    });
+
+    //actions
     self.searchAction = function () {
         self.isLoading(true);
         $.ajax({
@@ -86,7 +117,7 @@ ko.applyBindings(new function RandogramViewModel() {
             success: function (data) {
                 self.images([]);
                 pushImages(data);
-                setUsers();
+                setUsersAndPosts();
                 self.isLoading(false);
                 self.isSearchDone(true);
             },
@@ -97,53 +128,15 @@ ko.applyBindings(new function RandogramViewModel() {
         });
     };
 
-    var shuffle = function (array) {
-        var m = array.length, t, i;
-        while (m) {
-            i = Math.floor(Math.random() * m--);
-            t = array[m];
-            array[m] = array[i];
-            array[i] = t;
-        }
-        return array;
-    };
-    var random = function(min, max){
-        return Math.floor(Math.random() * (max - min)) + min;
-    };
-    var randomElement = function(arr){
-        return arr[random(0, arr.length)];
-    };
-    var selectLuckyUsers = function(){
-        //self.winnersAmount(self.winnersAmount().replace(/\D/g,''));
-        return shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
-    };
     self.selectAction = function () {
-        var luckyUsers = selectLuckyUsers();
+        var luckyUsers = shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
 
         var winnerPosts = luckyUsers.map(function(x){return randomElement(x.posts)});
         self.winners(winnerPosts);
     };
 
-    self.isLuckyButtonEnabled = ko.computed (function () {
-        return !self.isLoading() && self.images().length>1;
-    });
-    self.isSearchButtonEnabled = ko.computed (function () {
-        return !self.areTagsInvalid() && !self.isLoading();
-    });
-    self.getMoment = function(unixTime){
-        return moment(unixTime, "X").fromNow();
-    };
-
-    self.preview = ko.observableArray();
-
-    self.setPreview = function() {
-        if (self.isLoading()) {
-            return;
-        }
-        self.preview([this]);
-    }
+    //acces token
     self.accesToken = ko.observable();
-
     self.handleToken = ko.computed (function(){
         var params = {};
         if (location.search) {
@@ -161,6 +154,11 @@ ko.applyBindings(new function RandogramViewModel() {
             self.accesToken(params.accesToken);
         }
     });
+
+    //unixTimestamp -> "... ago"
+    self.getMoment = function(unixTime){
+        return moment(unixTime, "X").fromNow();
+    };
 });
 
 //Activate datetimepickers and make them linked to each other
