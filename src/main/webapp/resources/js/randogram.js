@@ -21,7 +21,7 @@ function randomElement(arr){
 //Knockout
 ko.applyBindings(new function RandogramViewModel() {
     var self = this;
-
+    
     //tags
     self.tags = ko.observable("griddynamicssaratov");
 
@@ -38,8 +38,8 @@ ko.applyBindings(new function RandogramViewModel() {
     self.winnersAmount = ko.observable(1);
 
     //date filter type
-    self.dateFilterType = ko.observable("Today");
-    self.dateFilterAvailableStatus = [
+    self.dateFilterSelected = ko.observable("Today");
+    self.dateFilterPresets = [
         { statusName: "Today" },
         { statusName: "Last week" },
         { statusName: "Last month" },
@@ -47,6 +47,10 @@ ko.applyBindings(new function RandogramViewModel() {
         { statusName: "Specify day" },
         { statusName: "Specify interval" }
     ];
+    self.dateFilterClickHandler = function(){
+        self.dateFilterSelected(this.statusName);
+    };
+
 
     //date fields
     self.dateFrom = ko.observable();

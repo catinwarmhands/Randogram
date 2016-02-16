@@ -91,12 +91,12 @@
                             <div class="dropdown">
                                 Search by
                                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span data-bind="text: dateFilterType"></span>
+                                    <span data-bind="text: dateFilterSelected"></span>
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterAvailableStatus">
-                                    <li data-bind="css: {'disabled' : statusName==$parent.dateFilterType}">
-                                        <a href="#" data-bind="click: $parent.dateFilterType(statusName)"><span data-bind="text: statusName"></span></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresets">
+                                    <li data-bind="click: $parent.dateFilterClickHandler, css: {'disabled' : statusName==$parent.dateFilterSelected}">
+                                        <a><span data-bind="text: statusName"></span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -131,7 +131,6 @@
 
 <div class="right">
     <div class="content" data-bind="foreach: images">
-        <div class="fade-in">
         <div class="image-cell">
             <div class="image-info-top">
                 <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
@@ -145,9 +144,7 @@
             </div>
             <div class="image-thumbnail">
                 <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
-                <!--data-bind="attr: {href: link}"-->
             </div>
-        </div>
         </div>
     </div>
 </div>
