@@ -19,15 +19,36 @@ function randomElement(arr){
 }
 
 //Knockout
-ko.applyBindings(new function RandogramViewModel() {
+var randogramViewModel = new function RandogramViewModel() {
     var self = this;
-    
+
     //tags
     self.tags = ko.observable("griddynamicssaratov");
+    //self.oldTags = ko.observable("griddynamicssaratov");
 
     //tags helpers
     self.areTagsInvalid = ko.computed (function () {
         return self.tags().length == 0;
+    });
+
+
+    self.synhTags = function(){
+        var tmp = self.tags();
+        $('#tags1').tagsinput('removeAll');
+        $('#tags2').tagsinput('removeAll');
+        $('#tags1').tagsinput('add', tmp);
+        $('#tags2').tagsinput('add', tmp);
+
+    };
+    self.tagsHandler = ko.pureComputed({
+        read: function () {
+            return self.tags();
+        },
+        write: function (value) {
+            self.tags(value);
+            self.synhTags();
+        },
+        owner: this
     });
 
     //checkboxes
@@ -177,7 +198,9 @@ ko.applyBindings(new function RandogramViewModel() {
     self.getMoment = function(unixTime){
         return moment(unixTime, "X").fromNow();
     };
-});
+};
+
+ko.applyBindings(randogramViewModel);
 
 //Activate datetimepickers and make them linked to each other
 $('#dateTimeFrom').datetimepicker();

@@ -50,15 +50,7 @@
     <div class="logo"><img src="./resources/images/logo.png"></div>
 
     <div class="controls">
-        <div class="tags-section">
-            <label for="tags">Tags:</label>
-            <input type="text" class="form-control" data-bind="value: tags" data-role="tagsinput" id="tags"/>
-        </div>
 
-        <div class="following-section">
-            <label for="sub">Only GDS followers:</label>
-            <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
-        </div>
 
         <!--<div class="date-section">-->
             <!--<label for="date">Search by date:</label>-->
@@ -80,27 +72,60 @@
                 <!--</div>-->
             <!--</div>-->
         <!--</div>-->
-
-        <div class="advanced-section">
-            <div class="panel-group">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">Advanced options</a></h4></div>
-                    <div id="collapse1" class="panel-collapse collapse">
-                        <div class="panel-body">
-
-                            <div class="dropdown">
-                                Search by
-                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span data-bind="text: dateFilterSelected"></span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresets">
-                                    <li data-bind="click: $parent.dateFilterClickHandler, css: {'disabled' : statusName==$parent.dateFilterSelected}">
-                                        <a><span data-bind="text: statusName"></span></a>
-                                    </li>
-                                </ul>
-                            </div>
+        <div class="tags-section">
+            <label for="tags1">Tags:</label>
+            <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags1"/>
+        </div>
+        <!--<button data-bind="click: upd">update</button>-->
+        <button data-bind="click: synhTags">synhTags</button>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Basic</a></h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+<!--Basic-->
+                        <div class="tags-section">
+                            <label for="tags2">Tags:</label>
+                            <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags2"/>
                         </div>
+                        <div class="following-section">
+                            <label for="sub">Only GDS followers:</label>
+                            <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
+                        </div>
+<!--/Basic-->
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Advanced</a></h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+<!--Advanced-->
+                        <div class="tags-section">
+                            <label for="tags">Tags:</label>
+                            <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags"/>
+                        </div>
+                        <div class="following-section">
+                            <label for="sub">Only GDS followers:</label>
+                            <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
+                        </div>
+                        <div class="dropdown">
+                            Search by
+                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span data-bind="text: dateFilterSelected"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresets">
+                                <li data-bind="css: {'disabled' : statusName==$parent.dateFilterSelected()}, click: $parent.dateFilterClickHandler">
+                                    <a><span data-bind="text: statusName"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+<!--/Advanced-->
                     </div>
                 </div>
             </div>
