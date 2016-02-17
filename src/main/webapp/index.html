@@ -44,6 +44,9 @@
 
     <!--numeric binding for winners amount field-->
     <script src="resources/js/numeric-binding.js"></script>
+
+    <!--confetti animation-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script>
 </head>
 <body>
 <div class="left-menu">
@@ -173,7 +176,7 @@
                     <label for="winners-amount-field">Winners amount:</label>
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" data-bind="numeric, value: winnersAmount" id="winners-amount-field"/>
+                            <input type="text" class="form-control" data-bind="numeric, value: winnersAmountHandler" id="winners-amount-field"/>
                             <span class="input-group-addon"data-bind="click: winnersAmountMinus"><span class="glyphicon glyphicon-minus"></span></span>
                             <span class="input-group-addon"data-bind="click: winnersAmountPlus"><span class="glyphicon glyphicon-plus"></span></span>
                         </div>
@@ -188,6 +191,24 @@
 </div>
 
 <div class="right">
+    <div class="winners-content" data-bind="foreach: winners">
+        <div class="image-cell">
+            <div class="image-info-top">
+                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+            </div>
+            <div class="image-info-bottom">
+                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                <div class="likes"><span data-bind="text: likes"></span>♥</div>
+            </div>
+            <div class="user-avatar">
+                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+            </div>
+            <div class="image-thumbnail">
+                <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
+            </div>
+        </div>
+    </div>
+
     <div class="content" data-bind="foreach: images">
         <div class="image-cell">
             <div class="image-info-top">

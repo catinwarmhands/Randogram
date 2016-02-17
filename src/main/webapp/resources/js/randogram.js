@@ -172,7 +172,6 @@ var randogramViewModel = new function RandogramViewModel() {
     /////////////////////////////////////////////////////observables////////////////////////////////////////////////////
     //arrays
     self.usersAndPosts = ko.observableArray([]);
-    self.winners = ko.observableArray([]);
     self.images = ko.observableArray([]);
     self.preview = ko.observableArray();
 
@@ -215,15 +214,32 @@ var randogramViewModel = new function RandogramViewModel() {
 
     /////////////////////////////////////////////////////winners////////////////////////////////////////////////////////
 
-    self.winnersAmount = ko.observable(1);
+    self.winners = ko.observableArray([]);
     self.winnersSelectionType = ko.observable("posts");
+    self.winnersAmount = ko.observable(1);
+    self.winnersAmountMax = function(){
+        return self.winnersSelectionType() === "users" ? self.usersAndPosts().length : self.images().length;
+    };
 
+    self.winnersAmountHandler = ko.pureComputed({
+        read: function () {
+            return self.winnersAmount();
+        },
+        write: function (value) {
+            if(value > self.winnersAmountMax()){
+                self.winnersAmount(self.winnersAmountMax());
+            }else{
+                self.winnersAmount(value);
+            }
+        },
+        owner: this
+    });
     //winnersAmount +/- buttons
     self.winnersAmountPlus = function () {
-        if(self.winnersAmount() < self.usersAndPosts().length){
+        if(self.winnersAmount() < self.winnersAmountMax()){
             self.winnersAmount(self.winnersAmount()+1);
-        }else if(self.usersAndPosts().length != 0){
-            self.winnersAmount(self.usersAndPosts().length);
+        }else if(self.winnersAmountMax() != 0){
+            self.winnersAmount(self.winnersAmountMax());
         }
     };
     self.winnersAmountMinus = function () {
@@ -246,6 +262,7 @@ var randogramViewModel = new function RandogramViewModel() {
         self.isLoading(true);
         self.closeAccordionCollapsibles();
         $('#chooseLucky-collapsible').collapse('hide');
+        $('#search-info-collapsible').collapse('hide');
 
         $.ajax({
             url: "getImages",
@@ -264,6 +281,7 @@ var randogramViewModel = new function RandogramViewModel() {
 
                 self.isLoading(false);
                 self.isSearchDone(true);
+                self.winnersAmount(1);
 
                 if(self.images().length > 0){
                     $('#chooseLucky-collapsible').collapse('show');
@@ -309,6 +327,3 @@ ko.applyBindings(randogramViewModel);
 $('#basicDateFrom').datetimepicker();
 $('#advancedDateFrom').datetimepicker();
 $('#advancedDateTo').datetimepicker();
-
-
-
