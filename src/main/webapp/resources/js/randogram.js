@@ -18,8 +18,28 @@ function randomElement(arr){
     return arr[random(0, arr.length)];
 }
 
+//parems parser
+function parseParams(){
+    var params = {};
+    if (location.search) {
+        var parts = location.search.substring(1).split('&');
+
+        for (var i = 0; i < parts.length; i++) {
+            var nv = parts[i].split('=');
+            if (!nv[0]) continue;
+            params[nv[0]] = nv[1] || true;
+        }
+    }
+    return params;
+}
+
+//moment.js helpers
 function toUTC(date){
-    return date ? date : null;
+    return date ? date.utc() : null;
+}
+
+function format(date){
+    return date ? date.format("MM/DD/YYYY hh:mm A") : null;
 }
 
 //Knockout
@@ -94,23 +114,23 @@ var randogramViewModel = new function RandogramViewModel() {
 
     //date fields
 
-    self.dateFrom = ko.observable();
-    self.dateTo = ko.observable();
+    self.dateFrom = ko.observable(moment().format("MM/DD/YYYY"));
+    self.dateTo = ko.observable(moment().format("MM/DD/YYYY"));
 
     self.calculateDateFrom = function(){
 
         switch(self.dateFilterSelected()){
             case "Today":
-                return moment().startOf('day').format("MM/DD/YYYY hh:mm A");
+                return moment().startOf('day');
                 break;
             case "Last week":
-                return moment().startOf('week').format("MM/DD/YYYY hh:mm A")
+                return moment().startOf('week');
             case "Last month":
-                return moment().startOf('month').format("MM/DD/YYYY hh:mm A")
+                return moment().startOf('month');
             case "Specify day":
-                return moment(self.dateFrom()).startOf('day').format("MM/DD/YYYY hh:mm A");
+                return moment(self.dateFrom()).startOf('day');
             case "Specify interval":
-                return moment(self.dateFrom()).startOf('day').format("MM/DD/YYYY hh:mm A");
+                return moment(self.dateFrom()).startOf('day');
                 break;
             case "All time":
                 return null;
@@ -121,13 +141,13 @@ var randogramViewModel = new function RandogramViewModel() {
     self.calculateDateTo = function(){
         switch(self.dateFilterSelected()){
             case "Specify day":
-                return moment(self.dateFrom()).endOf('day').format("MM/DD/YYYY hh:mm A");
+                return moment(self.dateFrom()).endOf('day');
             case "Specify interval":
-                return moment(self.dateTo()).endOf('day').format("MM/DD/YYYY hh:mm A");
+                return moment(self.dateTo()).endOf('day');
             case "All time":
                 return null;
             default:
-                return moment().format("MM/DD/YYYY hh:mm A");
+                return moment();
         }
     };
 
@@ -202,8 +222,8 @@ var randogramViewModel = new function RandogramViewModel() {
                 accesToken: self.accesToken(),
                 tags: self.tags(),
                 following: self.isFollowing(),
-                dateTimeFrom: self.calculateDateFrom(),
-                dateTimeTo: self.calculateDateTo()
+                dateTimeFrom: format(toUTC(self.calculateDateFrom())),
+                dateTimeTo: format(toUTC(self.calculateDateTo()))
             },
             dataType: "json",
             success: function (data) {
@@ -231,16 +251,8 @@ var randogramViewModel = new function RandogramViewModel() {
     //acces token
     self.accesToken = ko.observable();
     self.handleToken = ko.computed (function(){
-        var params = {};
-        if (location.search) {
-            var parts = location.search.substring(1).split('&');
-
-            for (var i = 0; i < parts.length; i++) {
-                var nv = parts[i].split('=');
-                if (!nv[0]) continue;
-                params[nv[0]] = nv[1] || true;
-            }
-        }
+        var params = parseParams();
+        
         if(!params.accesToken){
             window.location = "/";
         }else{
