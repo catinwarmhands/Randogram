@@ -18,7 +18,7 @@ function randomElement(arr){
     return arr[random(0, arr.length)];
 }
 
-//parems parser
+//params parser
 function parseParams(){
     var params = {};
     if (location.search) {
@@ -118,11 +118,9 @@ var randogramViewModel = new function RandogramViewModel() {
     self.dateTo = ko.observable(moment().format("MM/DD/YYYY"));
 
     self.calculateDateFrom = function(){
-
         switch(self.dateFilterSelected()){
             case "Today":
                 return moment().startOf('day');
-                break;
             case "Last week":
                 return moment().startOf('week');
             case "Last month":
@@ -131,9 +129,6 @@ var randogramViewModel = new function RandogramViewModel() {
                 return moment(self.dateFrom()).startOf('day');
             case "Specify interval":
                 return moment(self.dateFrom()).startOf('day');
-                break;
-            case "All time":
-                return null;
             default:
                 return null;
         }
@@ -252,7 +247,7 @@ var randogramViewModel = new function RandogramViewModel() {
     self.accesToken = ko.observable();
     self.handleToken = ko.computed (function(){
         var params = parseParams();
-        
+
         if(!params.accesToken){
             window.location = "/";
         }else{
