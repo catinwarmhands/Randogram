@@ -78,7 +78,7 @@
                             </ul>
                         </div>
                         <div id="basicDateFrom-collapsible" class="collapse">
-                            <div class="basicDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day'">
+                            <div class="basicDateFrom-section">
                                 <div class="form-group">
                                     <div class="input-group date" id="basicDateFrom" data-bind="datetimepicker: dateFrom">
                                         <input type="text" class="form-control"/>
@@ -121,7 +121,7 @@
                             </ul>
                         </div>
                         <div id="advancedDateFrom-collapsible" class="collapse">
-                            <div class="advancedDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day' || dateFilterSelected() === 'Specify interval'">
+                            <div class="advancedDateFrom-section">
                                 <div class="form-group">
                                     <div class="input-group date" id="advancedDateFrom" data-bind="datetimepicker: dateFrom">
                                         <input type="text" class="form-control"/>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div id="advancedDateTo-collapsible" class="collapse">
-                            <div class="advancedDateTo-section" data-bind="visible: dateFilterSelected() === 'Specify interval'">
+                            <div class="advancedDateTo-section">
                                 <div class="form-group">
                                     <div class="input-group date" id="advancedDateTo" data-bind="datetimepicker: dateTo">
                                         <input type="text" class="form-control"/>
@@ -148,11 +148,13 @@
         <div class="search-button">
             <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
         </div>
+        <div id="search-info-collapsible" class="collapse">
+            <div class="search-info">
+                <span data-bind="text: searchInfo"></span>
+            </div>
+        </div>
         <div id="chooseLucky-collapsible" class="collapse">
             <div class="chooseLucky-section">
-                <div class="search-info">
-                    <span data-bind="text: searchInfo"></span>
-                </div>
                 <div class="winners-amount" >
                     <label for="winners-amount-field">Winners amount:</label>
                     <div class="form-group">

@@ -116,11 +116,14 @@ var randogramViewModel = new function RandogramViewModel() {
     self.dateFilterClickHandler = function(){
         self.dateFilterSelected(this.statusName);
         switch(self.dateFilterSelected()){
-            case "Specify interval":
-                $('#advancedDateTo-collapsible').collapse('show');
             case "Specify day":
                 $('#basicDateFrom-collapsible').collapse('show');
                 $('#advancedDateFrom-collapsible').collapse('show');
+                $('#advancedDateTo-collapsible').collapse('hide');
+                break;
+            case "Specify interval":
+                $('#advancedDateFrom-collapsible').collapse('show');
+                $('#advancedDateTo-collapsible').collapse('show');
                 break;
             default:
                 $('#basicDateFrom-collapsible').collapse('hide');
@@ -230,6 +233,9 @@ var randogramViewModel = new function RandogramViewModel() {
         }
     };
     self.searchInfo = ko.computed (function () {
+        if(self.images().length == 0){
+            return "Sorry, we didn't find anything. Check your query."
+        }
         return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
     });
 
@@ -239,6 +245,7 @@ var randogramViewModel = new function RandogramViewModel() {
         self.isLoading(true);
         self.closeAccordionCollapsibles();
         $('#chooseLucky-collapsible').collapse('hide');
+
         $.ajax({
             url: "getImages",
             data: {
@@ -253,9 +260,14 @@ var randogramViewModel = new function RandogramViewModel() {
                 self.images([]);
                 pushImages(data);
                 setUsersAndPosts();
+
                 self.isLoading(false);
                 self.isSearchDone(true);
-                $('#chooseLucky-collapsible').collapse('show');
+
+                if(self.images().length > 0){
+                    $('#chooseLucky-collapsible').collapse('show');
+                }
+                $('#search-info-collapsible').collapse('show');
             },
             error: function () {
                 alert("error");
