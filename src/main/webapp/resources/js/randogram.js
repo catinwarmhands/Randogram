@@ -24,7 +24,6 @@ var randogramViewModel = new function RandogramViewModel() {
 
     //tags
     self.tags = ko.observable("griddynamicssaratov");
-    //self.oldTags = ko.observable("griddynamicssaratov");
 
     //tags helpers
     self.areTagsInvalid = ko.computed (function () {
@@ -32,21 +31,30 @@ var randogramViewModel = new function RandogramViewModel() {
     });
 
 
-    self.synhTags = function(){
-        var tmp = self.tags();
-        $('#tags1').tagsinput('removeAll');
-        $('#tags2').tagsinput('removeAll');
-        $('#tags1').tagsinput('add', tmp);
-        $('#tags2').tagsinput('add', tmp);
-
-    };
+    //tagsinput fields handler (so bad!)
+    self.tagsFix = ko.observable(true);
+    self.checkedFix = ko.observable(0);
     self.tagsHandler = ko.pureComputed({
         read: function () {
             return self.tags();
         },
         write: function (value) {
             self.tags(value);
-            self.synhTags();
+
+            //мне очень стыдно за этот костыль
+            if(self.checkedFix() < 2){
+                self.checkedFix(self.checkedFix()+1);
+                return;
+            }
+            if(self.tagsFix()){
+                self.tagsFix(false);
+                var tgs = self.tags();
+                $('#tags1').tagsinput('removeAll');
+                $('#tags2').tagsinput('removeAll');
+                $('#tags1').tagsinput('add', tgs);
+                $('#tags2').tagsinput('add', tgs);
+                setTimeout(function(){self.tagsFix(true)}, 100);
+            }
         },
         owner: this
     });
