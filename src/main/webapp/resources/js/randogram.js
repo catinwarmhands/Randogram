@@ -42,10 +42,12 @@ var randogramViewModel = new function RandogramViewModel() {
             self.tags(value);
 
             //мне очень стыдно за этот костыль
+            //защита от срабатывания при загрузке страницы
             if(self.checkedFix() < 2){
                 self.checkedFix(self.checkedFix()+1);
                 return;
             }
+            //защита от зацикливания
             if(self.tagsFix()){
                 self.tagsFix(false);
                 var tgs = self.tags();
