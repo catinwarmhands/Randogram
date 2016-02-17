@@ -45,10 +45,7 @@ function format(date){
 //Knockout
 var randogramViewModel = new function RandogramViewModel() {
     var self = this;
-
-    self.alertDate = function(){
-        alert($('#dateTimeFrom').data("DateTimePicker").date());
-    };
+    /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
     self.tags = ko.observable("griddynamicssaratov");
 
@@ -87,12 +84,7 @@ var randogramViewModel = new function RandogramViewModel() {
         owner: this
     });
 
-    //checkboxes
-    self.isFollowing = ko.observable(false);
-
-    //fields
-    self.winnersAmount = ko.observable(1);
-
+    /////////////////////////////////////////////////////dates//////////////////////////////////////////////////////////
     //date filter type
     self.dateFilterSelected = ko.observable("Today");
     self.dateFilterPresetsBasic = [
@@ -113,7 +105,6 @@ var randogramViewModel = new function RandogramViewModel() {
     };
 
     //date fields
-
     self.dateFrom = ko.observable(moment().format("MM/DD/YYYY"));
     self.dateTo = ko.observable(moment().format("MM/DD/YYYY"));
 
@@ -126,9 +117,8 @@ var randogramViewModel = new function RandogramViewModel() {
             case "Last month":
                 return moment().startOf('month');
             case "Specify day":
-                return moment(self.dateFrom()).startOf('day');
             case "Specify interval":
-                return moment(self.dateFrom()).startOf('day');
+                return moment(self.dateFrom()?self.dateFrom() : moment()).startOf('day');
             default:
                 return null;
         }
@@ -136,9 +126,9 @@ var randogramViewModel = new function RandogramViewModel() {
     self.calculateDateTo = function(){
         switch(self.dateFilterSelected()){
             case "Specify day":
-                return moment(self.dateFrom()).endOf('day');
+                return moment(self.dateFrom()?self.dateFrom() : moment()).endOf('day');
             case "Specify interval":
-                return moment(self.dateTo()).endOf('day');
+                return moment(self.dateTo()?self.dateTo() : moment()).endOf('day');
             case "All time":
                 return null;
             default:
@@ -146,6 +136,12 @@ var randogramViewModel = new function RandogramViewModel() {
         }
     };
 
+    //unixTimestamp -> "... ago"
+    self.getMoment = function(unixTime){
+        return moment(unixTime, "X").fromNow();
+    };
+
+    /////////////////////////////////////////////////////observables////////////////////////////////////////////////////
     //arrays
     self.usersAndPosts = ko.observableArray([]);
     self.winners = ko.observableArray([]);
@@ -155,16 +151,17 @@ var randogramViewModel = new function RandogramViewModel() {
     //statements
     self.isSearchDone = ko.observable(false);
     self.isLoading = ko.observable(false);
+    self.isFollowing = ko.observable(false);
 
     self.isLuckyButtonEnabled = ko.computed (function () {
-        return !self.isLoading() && self.images().length>1;
+        return !self.isLoading() && self.images().length>0;
     });
 
     self.isSearchButtonEnabled = ko.computed (function () {
         return !self.areTagsInvalid() && !self.isLoading();
     });
 
-    //arrays helpers
+    /////////////////////////////////////////////////////arrays helpers/////////////////////////////////////////////////
     self.setPreview = function() {
         if (self.isLoading()) {
             return;
@@ -188,6 +185,10 @@ var randogramViewModel = new function RandogramViewModel() {
         self.usersAndPosts(usersPairs);
     };
 
+    /////////////////////////////////////////////////////winners////////////////////////////////////////////////////////
+
+    self.winnersAmount = ko.observable(1);
+
     //winnersAmount +/- buttons
     self.winnersAmountPlus = function () {
         if(self.winnersAmount() < self.usersAndPosts().length){
@@ -207,7 +208,7 @@ var randogramViewModel = new function RandogramViewModel() {
         return "We found " + self.images().length + " posts from " + self.usersAndPosts().length + " users!";
     });
 
-    //actions
+    /////////////////////////////////////////////////////actions////////////////////////////////////////////////////////
     //search
     self.searchAction = function () {
         self.isLoading(true);
@@ -254,11 +255,6 @@ var randogramViewModel = new function RandogramViewModel() {
             self.accesToken(params.accesToken);
         }
     });
-
-    //unixTimestamp -> "... ago"
-    self.getMoment = function(unixTime){
-        return moment(unixTime, "X").fromNow();
-    };
 };
 
 ko.applyBindings(randogramViewModel);
