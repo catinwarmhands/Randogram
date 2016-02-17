@@ -45,6 +45,19 @@ function format(date){
 //Knockout
 var randogramViewModel = new function RandogramViewModel() {
     var self = this;
+    /////////////////////////////////////////////////////accordion//////////////////////////////////////////////////////
+    self.basicCollapsibleHandler = function(){
+        $('#basicCollapsible').collapse('show');
+        $('#advancedCollapsible').collapse('hide');
+    };
+    self.advancedCollapsibleHandler = function(){
+        $('#basicCollapsible').collapse('hide');
+        $('#advancedCollapsible').collapse('show');
+    };
+    self.closeAccordionCollapsibles = function(){
+        $('#basicCollapsible').collapse('hide');
+        $('#advancedCollapsible').collapse('hide');
+    };
     /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
     self.tags = ko.observable("griddynamicssaratov");
@@ -102,6 +115,18 @@ var randogramViewModel = new function RandogramViewModel() {
     ];
     self.dateFilterClickHandler = function(){
         self.dateFilterSelected(this.statusName);
+        switch(self.dateFilterSelected()){
+            case "Specify interval":
+                $('#advancedDateTo-collapsible').collapse('show');
+            case "Specify day":
+                $('#basicDateFrom-collapsible').collapse('show');
+                $('#advancedDateFrom-collapsible').collapse('show');
+                break;
+            default:
+                $('#basicDateFrom-collapsible').collapse('hide');
+                $('#advancedDateFrom-collapsible').collapse('hide');
+                $('#advancedDateTo-collapsible').collapse('hide');
+        }
     };
 
     //date fields
@@ -212,6 +237,8 @@ var randogramViewModel = new function RandogramViewModel() {
     //search
     self.searchAction = function () {
         self.isLoading(true);
+        self.closeAccordionCollapsibles();
+        $('#chooseLucky-collapsible').collapse('hide');
         $.ajax({
             url: "getImages",
             data: {
@@ -228,6 +255,7 @@ var randogramViewModel = new function RandogramViewModel() {
                 setUsersAndPosts();
                 self.isLoading(false);
                 self.isSearchDone(true);
+                $('#chooseLucky-collapsible').collapse('show');
             },
             error: function () {
                 alert("error");

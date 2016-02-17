@@ -52,12 +52,12 @@
     <div class="controls">
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
-                <div class="panel-heading" data-bind="click: alert(5)">
+                <div class="panel-heading" data-bind="click: basicCollapsibleHandler">
                     <h4 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Basic</a>
                     </h4>
                 </div>
-                <div id="collapse1" class="panel-collapse collapse in">
+                <div id="basicCollapsible" class="panel-collapse collapse in">
                     <div class="panel-body">
 <!--Basic-->
                         <div class="tags-section">
@@ -77,13 +77,15 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="basicDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day'">
-                            <div class="form-group">
-                                <div class="input-group date" id="basicDateFrom" data-bind="datetimepicker: dateFrom">
-                                    <input type="text" class="form-control"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon-calendar glyphicon"></span>
-                                    </span>
+                        <div id="basicDateFrom-collapsible" class="collapse">
+                            <div class="basicDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day'">
+                                <div class="form-group">
+                                    <div class="input-group date" id="basicDateFrom" data-bind="datetimepicker: dateFrom">
+                                        <input type="text" class="form-control"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon-calendar glyphicon"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -92,10 +94,10 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" data-bind="click: advancedCollapsibleHandler">
                     <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Advanced</a></h4>
                 </div>
-                <div id="collapse2" class="panel-collapse collapse">
+                <div id="advancedCollapsible" class="panel-collapse collapse">
                     <div class="panel-body">
 <!--Advanced-->
                         <div class="tags-section">
@@ -118,19 +120,23 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="advancedDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day' || dateFilterSelected() === 'Specify interval'">
-                            <div class="form-group">
-                                <div class="input-group date" id="advancedDateFrom" data-bind="datetimepicker: dateFrom">
-                                    <input type="text" class="form-control"/>
-                                    <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                        <div id="advancedDateFrom-collapsible" class="collapse">
+                            <div class="advancedDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day' || dateFilterSelected() === 'Specify interval'">
+                                <div class="form-group">
+                                    <div class="input-group date" id="advancedDateFrom" data-bind="datetimepicker: dateFrom">
+                                        <input type="text" class="form-control"/>
+                                        <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="advancedDateTo-section" data-bind="visible: dateFilterSelected() === 'Specify interval'">
-                            <div class="form-group">
-                                <div class="input-group date" id="advancedDateTo" data-bind="datetimepicker: dateTo">
-                                    <input type="text" class="form-control"/>
-                                    <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                        <div id="advancedDateTo-collapsible" class="collapse">
+                            <div class="advancedDateTo-section" data-bind="visible: dateFilterSelected() === 'Specify interval'">
+                                <div class="form-group">
+                                    <div class="input-group date" id="advancedDateTo" data-bind="datetimepicker: dateTo">
+                                        <input type="text" class="form-control"/>
+                                        <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,22 +148,24 @@
         <div class="search-button">
             <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
         </div>
-        <div class="chooseLucky-section" data-bind="visible: isSearchDone">
-            <div class="search-info">
-                <span data-bind="text: searchInfo"></span>
-            </div>
-            <div class="winners-amount" >
-                <label for="winners-amount-field">Winners amount:</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" data-bind="numeric, value: winnersAmount" id="winners-amount-field"/>
-                        <span class="input-group-addon"data-bind="click: winnersAmountMinus"><span class="glyphicon glyphicon-minus"></span></span>
-                        <span class="input-group-addon"data-bind="click: winnersAmountPlus"><span class="glyphicon glyphicon-plus"></span></span>
+        <div id="chooseLucky-collapsible" class="collapse">
+            <div class="chooseLucky-section">
+                <div class="search-info">
+                    <span data-bind="text: searchInfo"></span>
+                </div>
+                <div class="winners-amount" >
+                    <label for="winners-amount-field">Winners amount:</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="numeric, value: winnersAmount" id="winners-amount-field"/>
+                            <span class="input-group-addon"data-bind="click: winnersAmountMinus"><span class="glyphicon glyphicon-minus"></span></span>
+                            <span class="input-group-addon"data-bind="click: winnersAmountPlus"><span class="glyphicon glyphicon-plus"></span></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="chooseLucky-button">
-                <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled" data-toggle="modal" data-target="#winnersModal">Who is lucky?</button>
+                <div class="chooseLucky-button">
+                    <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled" data-toggle="modal" data-target="#winnersModal">Who is lucky?</button>
+                </div>
             </div>
         </div>
     </div>
