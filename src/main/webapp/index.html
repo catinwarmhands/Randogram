@@ -155,6 +155,20 @@
         </div>
         <div id="chooseLucky-collapsible" class="collapse">
             <div class="chooseLucky-section">
+                <div class="dropdown">
+                <label for="dropdownMenu1">Select by</label>
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span data-bind="text: winnersSelectionType"></span><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li data-bind="css: {'disabled' : winnersSelectionType() === 'posts'}, click: winnersSelectionType('posts')">
+                        <a><span>posts</span></a>
+                    </li>
+                    <li data-bind="css: {'disabled' : winnersSelectionType() === 'users'}, click: winnersSelectionType('users')">
+                        <a><span>users</span></a>
+                    </li>
+                </ul>
+            </div>
                 <div class="winners-amount" >
                     <label for="winners-amount-field">Winners amount:</label>
                     <div class="form-group">

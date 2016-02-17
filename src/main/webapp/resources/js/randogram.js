@@ -216,6 +216,7 @@ var randogramViewModel = new function RandogramViewModel() {
     /////////////////////////////////////////////////////winners////////////////////////////////////////////////////////
 
     self.winnersAmount = ko.observable(1);
+    self.winnersSelectionType = ko.observable("posts");
 
     //winnersAmount +/- buttons
     self.winnersAmountPlus = function () {
@@ -278,10 +279,14 @@ var randogramViewModel = new function RandogramViewModel() {
 
     //select winners action
     self.selectAction = function () {
-        var luckyUsers = shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
-
-        var winnerPosts = luckyUsers.map(function(x){return randomElement(x.posts)});
-        self.winners(winnerPosts);
+        if(self.winnersSelectionType() === "users"){
+            var luckyUsers = shuffle(self.usersAndPosts()).slice(0, self.winnersAmount());
+            var winnerPosts = luckyUsers.map(function(x){return randomElement(x.posts)});
+            self.winners(winnerPosts);
+        }else{
+            var luckyPosts = shuffle(self.images()).slice(0, self.winnersAmount());
+            self.winners(luckyPosts);
+        }
     };
 
     //acces token
