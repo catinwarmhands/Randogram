@@ -18,10 +18,17 @@ function randomElement(arr){
     return arr[random(0, arr.length)];
 }
 
+function toUTC(date){
+    return date ? date : null;
+}
+
 //Knockout
 var randogramViewModel = new function RandogramViewModel() {
     var self = this;
 
+    self.alertDate = function(){
+        alert($('#dateTimeFrom').data("DateTimePicker").date());
+    };
     //tags
     self.tags = ko.observable("griddynamicssaratov");
 
@@ -29,7 +36,6 @@ var randogramViewModel = new function RandogramViewModel() {
     self.areTagsInvalid = ko.computed (function () {
         return self.tags().length == 0;
     });
-
 
     //tagsinput fields handler (so bad!)
     self.tagsFix = ko.observable(true);
@@ -63,14 +69,18 @@ var randogramViewModel = new function RandogramViewModel() {
 
     //checkboxes
     self.isFollowing = ko.observable(false);
-    self.isSearchByDate = ko.observable(false);
 
     //fields
     self.winnersAmount = ko.observable(1);
 
     //date filter type
     self.dateFilterSelected = ko.observable("Today");
-    self.dateFilterPresets = [
+    self.dateFilterPresetsBasic = [
+        { statusName: "Today" },
+        { statusName: "Specify day" },
+        { statusName: "All time" }
+    ];
+    self.dateFilterPresetsAdvanced = [
         { statusName: "Today" },
         { statusName: "Last week" },
         { statusName: "Last month" },
@@ -82,10 +92,44 @@ var randogramViewModel = new function RandogramViewModel() {
         self.dateFilterSelected(this.statusName);
     };
 
-
     //date fields
+
     self.dateFrom = ko.observable();
     self.dateTo = ko.observable();
+
+    self.calculateDateFrom = function(){
+
+        switch(self.dateFilterSelected()){
+            case "Today":
+                return moment().startOf('day').format("MM/DD/YYYY hh:mm A");
+                break;
+            case "Last week":
+                return moment().startOf('week').format("MM/DD/YYYY hh:mm A")
+            case "Last month":
+                return moment().startOf('month').format("MM/DD/YYYY hh:mm A")
+            case "Specify day":
+                return moment(self.dateFrom()).startOf('day').format("MM/DD/YYYY hh:mm A");
+            case "Specify interval":
+                return moment(self.dateFrom()).startOf('day').format("MM/DD/YYYY hh:mm A");
+                break;
+            case "All time":
+                return null;
+            default:
+                return null;
+        }
+    };
+    self.calculateDateTo = function(){
+        switch(self.dateFilterSelected()){
+            case "Specify day":
+                return moment(self.dateFrom()).endOf('day').format("MM/DD/YYYY hh:mm A");
+            case "Specify interval":
+                return moment(self.dateTo()).endOf('day').format("MM/DD/YYYY hh:mm A");
+            case "All time":
+                return null;
+            default:
+                return moment().format("MM/DD/YYYY hh:mm A");
+        }
+    };
 
     //arrays
     self.usersAndPosts = ko.observableArray([]);
@@ -158,8 +202,8 @@ var randogramViewModel = new function RandogramViewModel() {
                 accesToken: self.accesToken(),
                 tags: self.tags(),
                 following: self.isFollowing(),
-                dateTimeFrom: (self.isSearchByDate() && self.dateFrom()) ? moment(self.dateFrom()).format("MM/DD/YYYY hh:mm A") : null,
-                dateTimeTo: (self.isSearchByDate() &&  self.dateTo()) ? moment(self.dateTo()).format("MM/DD/YYYY hh:mm A") : null
+                dateTimeFrom: self.calculateDateFrom(),
+                dateTimeTo: self.calculateDateTo()
             },
             dataType: "json",
             success: function (data) {
@@ -213,9 +257,10 @@ var randogramViewModel = new function RandogramViewModel() {
 ko.applyBindings(randogramViewModel);
 
 //Activate datetimepickers and make them linked to each other
-$('#dateTimeFrom').datetimepicker();
-$('#dateTimeTo').datetimepicker({ useCurrent: false });
-$("#dateTimeFrom").on("dp.change", function (e) { $('#dateTimeTo').data("DateTimePicker").minDate(e.date);});
-$("#dateTimeTo").on("dp.change", function (e) { $('#dateTimeFrom').data("DateTimePicker").maxDate(e.date);});
+//$('#dateTimeFrom').datetimepicker();
+$('#basicDateFrom').datetimepicker();
+$('#advancedDateFrom').datetimepicker();
+$('#advancedDateTo').datetimepicker();
+
 
 

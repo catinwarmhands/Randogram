@@ -47,11 +47,13 @@ body{
     padding-bottom: 4px;
     line-height: 2;
 }
-
-.subscribed-section{
-    margin-bottom: 10px;
+.basicDateFrom-section, .advancedDateFrom-section{
+    margin-top: 20px;
 }
 
+.following-section{
+    margin-bottom: 10px;
+}
 
 .search-button, .chooseLucky-button{
     padding:10px;

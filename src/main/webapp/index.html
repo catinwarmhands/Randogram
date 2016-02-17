@@ -17,7 +17,7 @@
 
     <!--Libs-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+    <script src="resources/js/lib/moment.min.js"></script>
     <script src="http://knockoutjs.com/downloads/knockout-3.4.0.js"></script>
 
     <!--Bootstrap-->
@@ -50,34 +50,12 @@
     <div class="logo"><img src="./resources/images/logo.png"></div>
 
     <div class="controls">
-
-
-        <!--<div class="date-section">-->
-            <!--<label for="date">Search by date:</label>-->
-            <!--<input type="checkbox"name="date" id="date" data-bind="checked: isSearchByDate">-->
-
-            <!--<div class="date-fields" data-bind="visible: isSearchByDate">-->
-                <!--<label for="dateTimeFrom">From:</label>-->
-                <!--<div class="form-group">-->
-                    <!--<div class="input-group date" id="dateTimeFrom" data-bind="datetimepicker: dateFrom">-->
-                        <!--<input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<label for="dateTimeTo">To:</label>-->
-                <!--<div class="form-group">-->
-                    <!--<div class="input-group date" id="dateTimeTo" data-bind="datetimepicker: dateTo">-->
-                        <!--<input type="text" class="form-control" />	<span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<button data-bind="click: upd">update</button>-->
-        <!--<button data-bind="click: synhTags">synhTags</button>-->
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Basic</a></h4>
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Basic</a>
+                    </h4>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse in">
                     <div class="panel-body">
@@ -86,9 +64,28 @@
                             <label for="tags1">Tags:</label>
                             <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags1"/>
                         </div>
-                        <div class="following-section">
-                            <label for="sub">Only GDS followers:</label>
-                            <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
+
+                        <div class="dropdown">
+                            <label for="dropdownMenu1">Uploaded</label>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span data-bind="text: dateFilterSelected"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresetsBasic">
+                                <li data-bind="css: {'disabled' : statusName==$parent.dateFilterSelected()}, click: $parent.dateFilterClickHandler">
+                                    <a><span data-bind="text: statusName"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="basicDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day'">
+                            <div class="form-group">
+                                <div class="input-group date" id="basicDateFrom" data-bind="datetimepicker: dateFrom">
+                                    <input type="text" class="form-control"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon-calendar glyphicon"></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 <!--/Basic-->
                     </div>
@@ -110,16 +107,36 @@
                             <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
                         </div>
                         <div class="dropdown">
-                            Search by
-                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <label for="dropdownMenu1">Uploaded</label>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <span data-bind="text: dateFilterSelected"></span>
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresets">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" data-bind="foreach: $root.dateFilterPresetsAdvanced">
                                 <li data-bind="css: {'disabled' : statusName==$parent.dateFilterSelected()}, click: $parent.dateFilterClickHandler">
                                     <a><span data-bind="text: statusName"></span></a>
                                 </li>
                             </ul>
+                        </div>
+                        <div class="advancedDateFrom-section" data-bind="visible: dateFilterSelected() === 'Specify day' || dateFilterSelected() === 'Specify interval'">
+                            <div class="form-group">
+                                <div class="input-group date" id="advancedDateFrom" data-bind="datetimepicker: dateFrom">
+                                    <input type="text" class="form-control"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon-calendar glyphicon"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advancedDateTo-section" data-bind="visible: dateFilterSelected() === 'Specify interval'">
+                            <div class="form-group">
+                                <div class="input-group date" id="advancedDateTo" data-bind="datetimepicker: dateTo">
+                                    <input type="text" class="form-control"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon-calendar glyphicon"></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 <!--/Advanced-->
                     </div>

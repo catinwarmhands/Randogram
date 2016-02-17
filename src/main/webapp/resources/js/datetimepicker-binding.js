@@ -4,7 +4,7 @@
 ko.bindingHandlers.datetimepicker = {
     init: function (element, valueAccessor, allBindings) {
         var options = {
-            format: 'MM/DD/YYYY hh:mm A',
+            format: 'MM/DD/YYYY',
             defaultDate: ko.unwrap(valueAccessor())
         };
 
