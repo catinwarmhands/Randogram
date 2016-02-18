@@ -99,7 +99,7 @@ body{
     padding:0;
     margin-left: 285px;
 }
-.content, .winners-content{
+.content, .winners-content, .loading-content{
     padding-top: 15px;
     text-align: center;
 }

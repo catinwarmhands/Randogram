@@ -187,6 +187,7 @@ var randogramViewModel = new function RandogramViewModel() {
     //arrays
     self.usersAndPosts = ko.observableArray([]);
     self.images = ko.observableArray([]);
+    self.tempImages = ko.observableArray([]);
     self.preview = ko.observableArray();
 
     //statements
@@ -267,7 +268,7 @@ var randogramViewModel = new function RandogramViewModel() {
     });
 
     /////////////////////////////////////////////////////actions////////////////////////////////////////////////////////
-    //search
+    //progressbar time
     self.startTime = ko.observable(moment());
     self.endTime = ko.observable(moment());
     self.progress = function(){
@@ -277,6 +278,7 @@ var randogramViewModel = new function RandogramViewModel() {
         var p = timeBetweenStartAndToday / timeBetweenStartAndEnd;
         return p;
     };
+    //search
     self.searchAction = function () {
         self.images([]);
         self.isLoading(true);
@@ -297,38 +299,52 @@ var randogramViewModel = new function RandogramViewModel() {
             },
             dataType: "json",
             success: function (data) {
+                alert(data);
                 willBeLoaded = data;
                 if(data > 1000){
                     alert("Only first 1000 of "+data+" photos will be loaded");
                     willBeLoaded = 1000;
                 }
+                //get first 40 photos
+                $.ajax({
+                    url: "getFirstImages",
+                    data: {
+                        accesToken: self.accesToken(),
+                        tags: self.tags(),
+                        amount: 2
+                    },
+                    dataType: "json",
+                    beforeSend: function(){
+                        self.startTime(moment());
+                    },
+                    success: function (data) {
+                        var m = moment();
+                        var interval = m.diff(self.startTime(), 'milliseconds');
+                        //magic numbers!
+                        self.endTime(m.add(((interval/90.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
+
+                        //slideshow
+                        collapsible('#loading-content-collapsible', 'show');
+                        var i = 0;
+                        var timerId = setInterval(function() {
+                            self.tempImages([data[i++]]);
+                            if(i >= data.length){
+                                i = 0;
+                            }
+                            if(!self.isLoading()){
+                                clearInterval(timerId);
+                            }
+                        }, 4000);
+                        collapsible('#loading-content-collapsible', 'hide');
+                    },
+                    error: function () {
+                        alert("getFirstImages error");
+                        self.isLoading(false);
+                    }
+                });
             },
             error: function () {
                 alert("getTagAmount error");
-            }
-        });
-
-        //get first 40 photos
-        $.ajax({
-            url: "getFirstImages",
-            data: {
-                accesToken: self.accesToken(),
-                tags: self.tags(),
-                amount: 2
-            },
-            dataType: "json",
-            beforeSend: function(){
-                self.startTime(moment());
-            },
-            success: function (data) {
-                var m = moment();
-                var interval = m.diff(self.startTime(), 'milliseconds');
-                //magic numbers!
-                self.endTime(m.add(((interval/90.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
-            },
-            error: function () {
-                alert("getImages error");
-                self.isLoading(false);
             }
         });
 
@@ -351,6 +367,7 @@ var randogramViewModel = new function RandogramViewModel() {
                 self.isSearchDone(true);
                 self.winnersAmount(1);
 
+                collapsible('#loading-content-collapsible', 'hide');
                 if(self.images().length > 0){
                     collapsible('#chooseLucky-collapsible', 'show');
                     collapsible('#content-collapsible', 'show');
@@ -360,7 +377,6 @@ var randogramViewModel = new function RandogramViewModel() {
             error: function () {
                 alert("getImages error");
                 self.isLoading(false);
-                l.ladda('stop');
             },
             timeout: 200000
         });
@@ -399,22 +415,6 @@ ko.applyBindings(randogramViewModel);
 $('#basicDateFrom').datetimepicker();
 $('#advancedDateFrom').datetimepicker();
 $('#advancedDateTo').datetimepicker();
-
-//$(document).ready(function() {
-//    var viewModel = function() {
-//        self = this;
-//
-//        self.percentage = ko.observable(0);
-//
-//        self.percentage.subscribe(function () {
-//            if (self.percentage() === 100) {
-//                clearTimeout(timer);
-//            }
-//        });
-//    };
-//
-//    var timer = setInterval(function() { viewModelObj.percentage(viewModelObj.percentage() + 1); }, 50);
-//});
 
 Ladda.bind( '#srch-btn', {
     callback: function( instance ) {

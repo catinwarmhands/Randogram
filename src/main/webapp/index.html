@@ -45,9 +45,6 @@
 
     <!--numeric binding for winners amount field-->
     <script src="resources/js/numeric-binding.js"></script>
-
-    <!--confetti animation-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script>
 </head>
 <body>
 <div class="left-menu">
@@ -192,6 +189,27 @@
 </div>
 
 <div class="right">
+    <div id="loading-content-collapsible" class="collapse">
+        <div class="hit-the-floor">Loading...</div>
+        <div class="loading-content" data-bind="foreach: tempImages">
+            <div class="image-cell">
+                <div class="image-info-top">
+                    <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+                </div>
+                <div class="image-info-bottom">
+                    <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                    <div class="likes"><span data-bind="text: likes"></span>♥</div>
+                </div>
+                <div class="user-avatar">
+                    <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                </div>
+                <div class="image-thumbnail">
+                    <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: low}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="winners-content-collapsible" class="collapse">
         <div class="hit-the-floor">Winners!</div>
         <div class="winners-content" data-bind="foreach: winners">
