@@ -29,7 +29,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     @Autowired
     private String secret;
 
-    private List<Image> fetchByTag(String tag ) {
+    private List<Image> fetchByTag(String tag, int amount) {
 
         TagMediaFeed feed;
         try {
@@ -41,7 +41,8 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         List<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toList());
         Pagination pagination = feed.getPagination();
 
-        while (pagination.getNextMaxTagId() != null) {
+        int i = 0;
+        while (i++ != amount && pagination.getNextMaxTagId() != null) {
             try {
                 feed = instagram.getRecentMediaTags(tag, null, pagination.getNextMaxTagId());
             } catch (InstagramException e) {
@@ -57,31 +58,27 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
 
     private List<Image> fetchByTag(String tag, LocalDateTime fromDate, LocalDateTime toDate) {
 
-        return fetchByTag(tag)
+        return fetchByTag(tag, -1)
                 .stream()
                 .filter(x -> (fromDate==null || x.getDate().isAfter(fromDate)) && (toDate==null || x.getDate().isBefore(toDate)))
                 .collect(Collectors.toList());
     }
 
     private void setToken(String token){
-
         Token accessToken = null;
         try{
             accessToken = new Token(token, secret);
         }catch(Exception e){
             throw new RuntimeException();
         }
-
         try{
             instagram.setAccessToken(accessToken);
         }catch(Exception e){
             throw new RuntimeException();
         }
-
     }
 ////this method calls from IndexController
     public List<Image> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate) {
-
         setToken(token);
 
         LinkedHashSet<Image> imagesSet = new LinkedHashSet<>();
@@ -92,6 +89,11 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
 
         ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
         return imagesList;
+    }
+
+    public List<Image> fetchFirst(String token, ArrayList<String> tags, int amount) {
+        setToken(token);
+        return fetchByTag(getSmallestTag(tags), amount);
     }
 
     private void filterByTagsConjunction(ArrayList<String> tags, LinkedHashSet<Image> imagesSet) {
@@ -163,9 +165,5 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
             }
         }
         return minTag;
-    }
-    @Override
-    public String getEmbeddedHtml(String url) {
-        return null;
     }
 }

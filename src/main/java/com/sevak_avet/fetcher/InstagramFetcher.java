@@ -14,5 +14,5 @@ import java.util.Set;
  */
 public interface InstagramFetcher<T> {
     List<T> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate);
-    String getEmbeddedHtml(String url);
+    List<T> fetchFirst(String token, ArrayList<String> tags, int amount);
 }

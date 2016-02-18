@@ -27,6 +27,19 @@ public class IndexController {
     @Autowired
     private InstagramFetcher<Image> fetcher;
 
+    @RequestMapping(value = "/getFirstImages", method = GET)
+    @ResponseBody
+    public String getFirstImages (@RequestParam("accesToken") String accesToken,
+                                  @RequestParam("tags") String tagsString,
+                                  @RequestParam("amount") int amount) {
+
+        ArrayList<String> tags = TagHelper.splitTags(tagsString);
+
+        if(tags.isEmpty()){return null;}
+
+        List<Image> images = fetcher.fetchFirst(accesToken, tags, amount);
+        return new Gson().toJson(images);
+    }
 
     @RequestMapping(value = "/getImages", method = GET)
     @ResponseBody
@@ -42,9 +55,7 @@ public class IndexController {
 
         ArrayList<String> tags = TagHelper.splitTags(tagsString);
 
-        if(tags.isEmpty()){
-            return null;
-        }
+        if(tags.isEmpty()){return null;}
 
         List<Image> images = fetcher.fetchByTags(accesToken, tags, isFollowing, fromDate, toDate);
 
