@@ -42,21 +42,34 @@ function format(date){
     return date ? date.format("MM/DD/YYYY hh:mm A") : null;
 }
 
+//elements helpers
+function collapsible(name, action){
+    $(name).collapse(action);
+}
+
+function removeTags(name){
+    $(name).tagsinput('removeAll');
+}
+
+function addTags(name, tags){
+    $(name).tagsinput('add', tags);
+}
+function setTags(name, tags){
+    removeTags(name);
+    addTags(name, tags);
+}
+
 //Knockout
 var randogramViewModel = new function RandogramViewModel() {
     var self = this;
     /////////////////////////////////////////////////////accordion//////////////////////////////////////////////////////
     self.basicCollapsibleHandler = function(){
-        $('#basicCollapsible').collapse('show');
-        $('#advancedCollapsible').collapse('hide');
+        collapsible('#basicCollapsible', 'show');
+        collapsible('#advancedCollapsible', 'hide');
     };
     self.advancedCollapsibleHandler = function(){
-        $('#basicCollapsible').collapse('hide');
-        $('#advancedCollapsible').collapse('show');
-    };
-    self.closeAccordionCollapsibles = function(){
-        $('#basicCollapsible').collapse('hide');
-        $('#advancedCollapsible').collapse('hide');
+        collapsible('#basicCollapsible', 'hide');
+        collapsible('#advancedCollapsible', 'show');
     };
     /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
@@ -86,11 +99,8 @@ var randogramViewModel = new function RandogramViewModel() {
             //защита от зацикливания
             if(self.tagsFix()){
                 self.tagsFix(false);
-                var tgs = self.tags();
-                $('#tags1').tagsinput('removeAll');
-                $('#tags2').tagsinput('removeAll');
-                $('#tags1').tagsinput('add', tgs);
-                $('#tags2').tagsinput('add', tgs);
+                setTags('#tags1', self.tags());
+                setTags('#tags2', self.tags());
                 setTimeout(function(){self.tagsFix(true)}, 100);
             }
         },
@@ -117,18 +127,18 @@ var randogramViewModel = new function RandogramViewModel() {
         self.dateFilterSelected(this.statusName);
         switch(self.dateFilterSelected()){
             case "Specify day":
-                $('#basicDateFrom-collapsible').collapse('show');
-                $('#advancedDateFrom-collapsible').collapse('show');
-                $('#advancedDateTo-collapsible').collapse('hide');
+                collapsible('#basicDateFrom-collapsible', 'show');
+                collapsible('#advancedDateFrom-collapsible', 'show');
+                collapsible('#advancedDateTo-collapsible', 'hide');
                 break;
             case "Specify interval":
-                $('#advancedDateFrom-collapsible').collapse('show');
-                $('#advancedDateTo-collapsible').collapse('show');
+                collapsible('#advancedDateFrom-collapsible', 'show');
+                collapsible('#advancedDateTo-collapsible', 'show');
                 break;
             default:
-                $('#basicDateFrom-collapsible').collapse('hide');
-                $('#advancedDateFrom-collapsible').collapse('hide');
-                $('#advancedDateTo-collapsible').collapse('hide');
+                collapsible('#basicDateFrom-collapsible', 'hide');
+                collapsible('#advancedDateFrom-collapsible', 'hide');
+                collapsible('#advancedDateTo-collapsible', 'hide');
         }
     };
 
@@ -146,7 +156,7 @@ var randogramViewModel = new function RandogramViewModel() {
                 return moment().startOf('month');
             case "Specify day":
             case "Specify interval":
-                return moment(self.dateFrom()?self.dateFrom() : moment()).startOf('day');
+                return moment(self.dateFrom() ? self.dateFrom() : moment()).startOf('day');
             default:
                 return null;
         }
@@ -154,9 +164,9 @@ var randogramViewModel = new function RandogramViewModel() {
     self.calculateDateTo = function(){
         switch(self.dateFilterSelected()){
             case "Specify day":
-                return moment(self.dateFrom()?self.dateFrom() : moment()).endOf('day');
+                return moment(self.dateFrom() ? self.dateFrom() : moment()).endOf('day');
             case "Specify interval":
-                return moment(self.dateTo()?self.dateTo() : moment()).endOf('day');
+                return moment(self.dateTo() ? self.dateTo() : moment()).endOf('day');
             case "All time":
                 return null;
             default:
@@ -260,9 +270,13 @@ var randogramViewModel = new function RandogramViewModel() {
     //search
     self.searchAction = function () {
         self.isLoading(true);
-        self.closeAccordionCollapsibles();
-        $('#chooseLucky-collapsible').collapse('hide');
-        $('#search-info-collapsible').collapse('hide');
+
+        collapsible('#basicCollapsible', 'hide');
+        collapsible('#advancedCollapsible', 'hide');
+        collapsible('#chooseLucky-collapsible', 'hide');
+        collapsible('#search-info-collapsible', 'hide');
+        collapsible('#winners-content-collapsible', 'hide');
+        collapsible('#content-collapsible', 'hide');
 
         $.ajax({
             url: "getImages",
@@ -284,9 +298,10 @@ var randogramViewModel = new function RandogramViewModel() {
                 self.winnersAmount(1);
 
                 if(self.images().length > 0){
-                    $('#chooseLucky-collapsible').collapse('show');
+                    collapsible('#chooseLucky-collapsible', 'show');
+                    collapsible('#content-collapsible', 'show');
                 }
-                $('#search-info-collapsible').collapse('show');
+                collapsible('#search-info-collapsible', 'show');
             },
             error: function () {
                 alert("error");
@@ -305,6 +320,7 @@ var randogramViewModel = new function RandogramViewModel() {
             var luckyPosts = shuffle(self.images()).slice(0, self.winnersAmount());
             self.winners(luckyPosts);
         }
+        collapsible('#winners-content-collapsible', 'show');
     };
 
     //acces token

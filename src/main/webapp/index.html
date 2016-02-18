@@ -191,73 +191,43 @@
 </div>
 
 <div class="right">
-    <div class="winners-content" data-bind="foreach: winners">
-        <div class="image-cell">
-            <div class="image-info-top">
-                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
-            </div>
-            <div class="image-info-bottom">
-                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
-                <div class="likes"><span data-bind="text: likes"></span>♥</div>
-            </div>
-            <div class="user-avatar">
-                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
-            </div>
-            <div class="image-thumbnail">
-                <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
+    <div id="winners-content-collapsible" class="collapse">
+        <div class="hit-the-floor">Winners!</div>
+        <div class="winners-content" data-bind="foreach: winners">
+            <div class="image-cell">
+                <div class="image-info-top">
+                    <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+                </div>
+                <div class="image-info-bottom">
+                    <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                    <div class="likes"><span data-bind="text: likes"></span>♥</div>
+                </div>
+                <div class="user-avatar">
+                    <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                </div>
+                <div class="image-thumbnail">
+                    <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: low}"></a>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="content" data-bind="foreach: images">
-        <div class="image-cell">
-            <div class="image-info-top">
-                <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
-            </div>
-            <div class="image-info-bottom">
-                <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
-                <div class="likes"><span data-bind="text: likes"></span>♥</div>
-            </div>
-            <div class="user-avatar">
-                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
-            </div>
-            <div class="image-thumbnail">
-                <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--placeholder, will be removed-->
-<div id="winnersModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Winners!</h4>
-            </div>
-            <div class="modal-body">
-                <div class="winners" data-bind="foreach: winners">
-                    <div class="winner" id="winner">
-                        <div class="head-info">
-                            <div class="avatar">
-                                <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
-                            </div>
-                            <a data-bind="attr: {href: userUrl}">
-                            <div class="text-info">
-                                <div class="fullname">
-                                    <a data-bind="text: user.full_name, attr: {href: userUrl}"></a>
-                                </div>
-                                <div class="username">
-                                    <a data-bind="text: user.username, attr: {href: userUrl}"></a>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                        <div class="image">
-                            <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
-                        </div> <hr>
-                    </div>
+    <div id="content-collapsible" class="collapse">
+        <div class="hit-the-floor">Results:</div>
+        <div class="content" data-bind="foreach: images">
+            <div class="image-cell">
+                <div class="image-info-top">
+                    <div class="time"><span data-bind="text: $parent.getMoment(unixTime)"></span></div>
+                </div>
+                <div class="image-info-bottom">
+                    <div class="comments">☰<span data-bind="text: commentsAmount"></span></div>
+                    <div class="likes"><span data-bind="text: likes"></span>♥</div>
+                </div>
+                <div class="user-avatar">
+                    <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                </div>
+                <div class="image-thumbnail">
+                    <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: thumbnail}"></a>
                 </div>
             </div>
         </div>
