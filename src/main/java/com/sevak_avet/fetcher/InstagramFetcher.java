@@ -15,4 +15,6 @@ import java.util.Set;
 public interface InstagramFetcher<T> {
     List<T> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate);
     List<T> fetchFirst(String token, ArrayList<String> tags, int amount);
+    long getTagAmount(String tag);
+    String getSmallestTag(ArrayList<String> tags);
 }

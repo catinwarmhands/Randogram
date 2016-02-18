@@ -27,14 +27,19 @@ public class IndexController {
     @Autowired
     private InstagramFetcher<Image> fetcher;
 
+    @RequestMapping(value = "/getTagAmount", method = GET)
+    @ResponseBody
+    public long getTagAmount (@RequestParam("tags") String tagsString) {
+        ArrayList<String> tags = TagHelper.splitTags(tagsString);
+        return fetcher.getTagAmount(fetcher.getSmallestTag(tags));
+    }
+
     @RequestMapping(value = "/getFirstImages", method = GET)
     @ResponseBody
     public String getFirstImages (@RequestParam("accesToken") String accesToken,
                                   @RequestParam("tags") String tagsString,
                                   @RequestParam("amount") int amount) {
-
         ArrayList<String> tags = TagHelper.splitTags(tagsString);
-
         if(tags.isEmpty()){return null;}
 
         List<Image> images = fetcher.fetchFirst(accesToken, tags, amount);
@@ -48,18 +53,14 @@ public class IndexController {
                              @RequestParam("following") boolean isFollowing,
                              @RequestParam("dateTimeFrom") String from,
                              @RequestParam("dateTimeTo") String to) {
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
         LocalDateTime fromDate = from==""? null: LocalDateTime.parse(from, formatter);
         LocalDateTime toDate = to==""? null: LocalDateTime.parse(to, formatter);
 
         ArrayList<String> tags = TagHelper.splitTags(tagsString);
-
         if(tags.isEmpty()){return null;}
 
         List<Image> images = fetcher.fetchByTags(accesToken, tags, isFollowing, fromDate, toDate);
-
         return new Gson().toJson(images);
     }
-    
 }

@@ -41,8 +41,8 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         List<Image> imageUrls = feed.getData().stream().map(Image::new).collect(Collectors.toList());
         Pagination pagination = feed.getPagination();
 
-        int i = 0;
-        while (i++ != amount && pagination.getNextMaxTagId() != null) {
+        int i = 0;          //  VVVVVV 50 pages * 20 photos = 1000 photos
+        while (i++ != amount && i < 50 && pagination.getNextMaxTagId() != null) {
             try {
                 feed = instagram.getRecentMediaTags(tag, null, pagination.getNextMaxTagId());
             } catch (InstagramException e) {
@@ -51,6 +51,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
 
             imageUrls.addAll(feed.getData().stream().map(Image::new).collect(Collectors.toSet()));
             pagination = feed.getPagination();
+
         }
 
         return imageUrls;
@@ -142,7 +143,17 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         }
     }
 
-    private String getSmallestTag(ArrayList<String> tags){
+    public long getTagAmount(String tag){
+        TagInfoFeed feed;
+        try {
+            feed = instagram.getTagInfo(tag);
+        } catch (InstagramException e) {
+            throw new RuntimeException(e);
+        }
+        return feed.getTagInfo().getMediaCount();
+    }
+
+    public String getSmallestTag(ArrayList<String> tags){
         if(tags.size() == 1){
             return tags.get(0);
         }
@@ -151,16 +162,9 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         long minAmount = Long.MAX_VALUE;
 
         for(String tag : tags){
-            TagInfoFeed feed;
-            try {
-                feed = instagram.getTagInfo(tag);
-            } catch (InstagramException e) {
-                throw new RuntimeException(e);
-            }
-            TagInfoData tagData = feed.getTagInfo();
-
-            if(tagData.getMediaCount() < minAmount){
-                minAmount = tagData.getMediaCount();
+            long tagAmount = getTagAmount(tag);
+            if(tagAmount < minAmount){
+                minAmount = tagAmount;
                 minTag = tag;
             }
         }

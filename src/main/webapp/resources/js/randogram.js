@@ -278,6 +278,24 @@ var randogramViewModel = new function RandogramViewModel() {
         collapsible('#winners-content-collapsible', 'hide');
         collapsible('#content-collapsible', 'hide');
 
+        //get tag info
+        $.ajax({
+            url: "getTagAmount",
+            data: {
+                tags: self.tags()
+            },
+            dataType: "json",
+            success: function (data) {
+                if(data > 1000){
+                    alert("Only first 1000 of "+data+" photos will be loaded");
+                }
+            },
+            error: function () {
+                alert("getTagAmount error");
+            }
+        });
+
+        //get images
         $.ajax({
             url: "getImages",
             data: {
@@ -304,9 +322,10 @@ var randogramViewModel = new function RandogramViewModel() {
                 collapsible('#search-info-collapsible', 'show');
             },
             error: function () {
-                alert("error");
+                alert("getImages error");
                 self.isLoading(false);
-            }
+            },
+            timeout: 200000
         });
     };
 
