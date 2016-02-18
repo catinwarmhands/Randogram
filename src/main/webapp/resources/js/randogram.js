@@ -1,3 +1,24 @@
+ko.bindingHandlers.progressBar = {
+    init: function(element) {
+        return { controlsDescendantBindings: true };
+    },
+    update : function(element, valueAccessor, bindingContext) {
+        var options = ko.unwrap(valueAccessor());
+
+        var value = options.value();
+
+        var width = value + "%";
+
+        $(element).addClass("progressBar");
+
+        ko.applyBindingsToNode(element, {
+            html : '<div data-bind="style: { width: \'' + width + '\' }"></div><div class="progressText" data-bind="text: \'' + value + ' %\'"></div>'
+        });
+
+        ko.applyBindingsToDescendants(bindingContext, element);
+    }
+};
+
 //arrays helpers
 function shuffle(array) {
     var m = array.length, t, i;
@@ -42,6 +63,10 @@ function format(date){
     return date ? date.format("MM/DD/YYYY hh:mm A") : null;
 }
 
+function multiply(time, n){
+    return time.add(time.millisecond() * n, 'milliseconds')
+}
+
 //elements helpers
 function collapsible(name, action){
     $(name).collapse(action);
@@ -73,7 +98,7 @@ var randogramViewModel = new function RandogramViewModel() {
     };
     /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
-    self.tags = ko.observable("griddynamicssaratov");
+    self.tags = ko.observable("griddynamics");
 
     //tags helpers
     self.areTagsInvalid = ko.computed (function () {
@@ -268,7 +293,16 @@ var randogramViewModel = new function RandogramViewModel() {
 
     /////////////////////////////////////////////////////actions////////////////////////////////////////////////////////
     //search
+    self.startTime = ko.observable(moment());
+    self.endTime = ko.observable(moment());
+    self.progress = function(){
+        var timeBetweenStartAndEnd = (self.endTime().toDate() - self.startTime().toDate());
+        var timeBetweenStartAndToday = (moment().toDate() - self.startTime().toDate());
+        var p = timeBetweenStartAndToday / timeBetweenStartAndEnd;
+        return p;
+    };
     self.searchAction = function () {
+
         self.isLoading(true);
 
         collapsible('#basicCollapsible', 'hide');
@@ -279,6 +313,7 @@ var randogramViewModel = new function RandogramViewModel() {
         collapsible('#content-collapsible', 'hide');
 
         //get tag info
+        var willBeLoaded = 100;
         $.ajax({
             url: "getTagAmount",
             data: {
@@ -286,13 +321,37 @@ var randogramViewModel = new function RandogramViewModel() {
             },
             dataType: "json",
             success: function (data) {
+                willBeLoaded = data;
                 if(data > 1000){
                     alert("Only first 1000 of "+data+" photos will be loaded");
+                    willBeLoaded = 1000;
                 }
             },
             error: function () {
                 alert("getTagAmount error");
             }
+        });
+
+        //get first 40 photos
+        $.ajax({
+            url: "getFirstImages",
+            data: {
+                accesToken: self.accesToken(),
+                tags: self.tags(),
+                amount: 1
+            },
+            dataType: "json",
+            beforeSend: function(){
+                self.startTime(moment());
+            },
+            success: function (data) {
+                self.endTime(moment().add((willBeLoaded*0.9)/20, 'seconds'));
+            },
+            error: function () {
+                alert("getImages error");
+                self.isLoading(false);
+
+            },
         });
 
         //get images
@@ -324,6 +383,7 @@ var randogramViewModel = new function RandogramViewModel() {
             error: function () {
                 alert("getImages error");
                 self.isLoading(false);
+                l.ladda('stop');
             },
             timeout: 200000
         });
@@ -362,3 +422,19 @@ ko.applyBindings(randogramViewModel);
 $('#basicDateFrom').datetimepicker();
 $('#advancedDateFrom').datetimepicker();
 $('#advancedDateTo').datetimepicker();
+
+//$(document).ready(function() {
+//    var viewModel = function() {
+//        self = this;
+//
+//        self.percentage = ko.observable(0);
+//
+//        self.percentage.subscribe(function () {
+//            if (self.percentage() === 100) {
+//                clearTimeout(timer);
+//            }
+//        });
+//    };
+//
+//    var timer = setInterval(function() { viewModelObj.percentage(viewModelObj.percentage() + 1); }, 50);
+//});

@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="resources/css/lib/ladda.min.css">
     <script src="resources/js/lib/spin.min.js"></script>
     <script src="resources/js/lib/ladda.min.js"></script>
+    <script src="resources/js/lib/ladda.jquery.min.js"></script>
     <script src="resources/js/ladda-binding.js"></script>
 
     <!--numeric binding for winners amount field-->
@@ -149,7 +150,7 @@
             </div>
         </div>
         <div class="search-button">
-            <button class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
+            <button id="srch-btn" class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
         </div>
         <div id="search-info-collapsible" class="collapse">
             <div class="search-info">
@@ -183,7 +184,7 @@
                     </div>
                 </div>
                 <div class="chooseLucky-button">
-                    <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled" data-toggle="modal" data-target="#winnersModal">Who is lucky?</button>
+                    <button class="ladda-button" data-color="blue" type="button" data-bind="click: selectAction, enable: isLuckyButtonEnabled">Who is lucky?</button>
                 </div>
             </div>
         </div>
