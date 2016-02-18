@@ -1,24 +1,3 @@
-ko.bindingHandlers.progressBar = {
-    init: function(element) {
-        return { controlsDescendantBindings: true };
-    },
-    update : function(element, valueAccessor, bindingContext) {
-        var options = ko.unwrap(valueAccessor());
-
-        var value = options.value();
-
-        var width = value + "%";
-
-        $(element).addClass("progressBar");
-
-        ko.applyBindingsToNode(element, {
-            html : '<div data-bind="style: { width: \'' + width + '\' }"></div><div class="progressText" data-bind="text: \'' + value + ' %\'"></div>'
-        });
-
-        ko.applyBindingsToDescendants(bindingContext, element);
-    }
-};
-
 //arrays helpers
 function shuffle(array) {
     var m = array.length, t, i;
@@ -231,10 +210,6 @@ var randogramViewModel = new function RandogramViewModel() {
         self.preview([this]);
     };
 
-    var pushImages = function (images) {
-        self.images(self.images().concat(images));
-    };
-
     var setUsersAndPosts = function(){
         var users = new Set(self.images().map(function(image){return image.user.username}));
         var usersArray = Array.from(users);
@@ -296,13 +271,14 @@ var randogramViewModel = new function RandogramViewModel() {
     self.startTime = ko.observable(moment());
     self.endTime = ko.observable(moment());
     self.progress = function(){
+        if(!self.isLoading()){return 1}
         var timeBetweenStartAndEnd = (self.endTime().toDate() - self.startTime().toDate());
         var timeBetweenStartAndToday = (moment().toDate() - self.startTime().toDate());
         var p = timeBetweenStartAndToday / timeBetweenStartAndEnd;
         return p;
     };
     self.searchAction = function () {
-
+        self.images([]);
         self.isLoading(true);
 
         collapsible('#basicCollapsible', 'hide');
@@ -338,20 +314,22 @@ var randogramViewModel = new function RandogramViewModel() {
             data: {
                 accesToken: self.accesToken(),
                 tags: self.tags(),
-                amount: 1
+                amount: 2
             },
             dataType: "json",
             beforeSend: function(){
                 self.startTime(moment());
             },
             success: function (data) {
-                self.endTime(moment().add((willBeLoaded*0.9)/20, 'seconds'));
+                var m = moment();
+                var interval = m.diff(self.startTime(), 'milliseconds');
+                //magic numbers!
+                self.endTime(m.add(((interval/90.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
             },
             error: function () {
                 alert("getImages error");
                 self.isLoading(false);
-
-            },
+            }
         });
 
         //get images
@@ -366,8 +344,7 @@ var randogramViewModel = new function RandogramViewModel() {
             },
             dataType: "json",
             success: function (data) {
-                self.images([]);
-                pushImages(data);
+                self.images(data);
                 setUsersAndPosts();
 
                 self.isLoading(false);
@@ -438,3 +415,17 @@ $('#advancedDateTo').datetimepicker();
 //
 //    var timer = setInterval(function() { viewModelObj.percentage(viewModelObj.percentage() + 1); }, 50);
 //});
+
+Ladda.bind( '#srch-btn', {
+    callback: function( instance ) {
+        var progress = 0;
+        var interval = setInterval( function() {
+            progress = randogramViewModel.progress();
+            instance.setProgress( progress );
+            if( progress === 1 ) {
+                instance.stop();
+                clearInterval( interval );
+            }
+        }, 200 );
+    }
+} );
