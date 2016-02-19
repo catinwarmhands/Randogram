@@ -66,17 +66,17 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     }
 
     private void setToken(String token){
-//        Token accessToken = null;
-//        try{
-//            accessToken = new Token(token, secret);
-//        }catch(Exception e){
-//            throw new RuntimeException();
-//        }
-//        try{
-//            instagram.setAccessToken(accessToken);
-//        }catch(Exception e){
-//            throw new RuntimeException();
-//        }
+        Token accessToken = null;
+        try{
+            accessToken = new Token(token, secret);
+        }catch(Exception e){
+            throw new RuntimeException();
+        }
+        try{
+            instagram.setAccessToken(accessToken);
+        }catch(Exception e){
+            throw new RuntimeException();
+        }
     }
 ////this method calls from IndexController
     public List<Image> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate) {
