@@ -40,6 +40,7 @@ public class SpringConfig {
                 .apiKey(CLIENT_ID)
                 .apiSecret(SECRET)
                 .callback(URL)
+                .scope("comments")
                 .build();
     }
 

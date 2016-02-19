@@ -30,7 +30,6 @@ public class LoginController {
     @ResponseBody
     public String redirect(){
         String authorizationUrl = instagramService.getAuthorizationUrl(null);
-
         return authorizationUrl;
     }
 
@@ -44,8 +43,9 @@ public class LoginController {
 
         Verifier verifier = new Verifier(code);
         Token accessToken = instagramService.getAccessToken(null, verifier);
+
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);
-        return "redirect:/index";
+        return "redirect:/index.html?accesToken="+accessToken.getToken();
     }
 }

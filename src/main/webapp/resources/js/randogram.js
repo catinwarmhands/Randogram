@@ -281,6 +281,7 @@ var randogramViewModel = new function RandogramViewModel() {
     //search
     self.searchAction = function () {
         self.images([]);
+        self.tempImages([]);
         self.isLoading(true);
 
         collapsible('#basicCollapsible', 'hide');
@@ -299,7 +300,6 @@ var randogramViewModel = new function RandogramViewModel() {
             },
             dataType: "json",
             success: function (data) {
-                alert(data);
                 willBeLoaded = data;
                 if(data > 1000){
                     alert("Only first 1000 of "+data+" photos will be loaded");
@@ -321,7 +321,7 @@ var randogramViewModel = new function RandogramViewModel() {
                         var m = moment();
                         var interval = m.diff(self.startTime(), 'milliseconds');
                         //magic numbers!
-                        self.endTime(m.add(((interval/90.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
+                        self.endTime(m.add(((interval/70.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
 
                         //slideshow
                         collapsible('#loading-content-collapsible', 'show');
@@ -396,7 +396,7 @@ var randogramViewModel = new function RandogramViewModel() {
     };
 
     //acces token
-    self.accesToken = ko.observable();
+    self.accesToken = ko.observable(null);
     self.handleToken = ko.computed (function(){
         var params = parseParams();
 
