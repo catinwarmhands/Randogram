@@ -403,6 +403,7 @@ var randogramViewModel = new function RandogramViewModel() {
             var luckyPosts = shuffle(self.images()).slice(0, self.winnersAmount());
             self.winners(luckyPosts);
         }
+        window.scrollTo(0, 0);
         collapsible('#winners-content-collapsible', 'show');
     };
 
