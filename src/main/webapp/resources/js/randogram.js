@@ -324,7 +324,9 @@ var randogramViewModel = new function RandogramViewModel() {
                         self.endTime(m.add(((interval/70.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
 
                         //slideshow
-                        collapsible('#loading-content-collapsible', 'show');
+                        if(self.isLoading()) {
+                            collapsible('#loading-content-collapsible', 'show');
+                        }
                         var i = 0;
                         var timerId = setInterval(function() {
                             self.tempImages([data[i++]]);
@@ -333,9 +335,9 @@ var randogramViewModel = new function RandogramViewModel() {
                             }
                             if(!self.isLoading()){
                                 clearInterval(timerId);
+                                collapsible('#loading-content-collapsible', 'hide');
                             }
                         }, 4000);
-                        collapsible('#loading-content-collapsible', 'hide');
                     },
                     error: function () {
                         alert("getFirstImages error");
@@ -345,6 +347,7 @@ var randogramViewModel = new function RandogramViewModel() {
             },
             error: function () {
                 alert("getTagAmount error");
+                collapsible('#loading-content-collapsible', 'hide');
             }
         });
 
@@ -377,6 +380,7 @@ var randogramViewModel = new function RandogramViewModel() {
             error: function () {
                 alert("getImages error");
                 self.isLoading(false);
+                collapsible('#loading-content-collapsible', 'hide');
             },
             timeout: 200000
         });
