@@ -44,6 +44,8 @@ public class LoginController {
 
         Verifier verifier = new Verifier(code);
         Token accessToken = instagramService.getAccessToken(null, verifier);
-        return "redirect:/index.html?accesToken="+accessToken.getToken();
+        Instagram instagram = new Instagram(accessToken);
+        session.setAttribute("instagram", instagram);
+        return "redirect:/index";
     }
 }
