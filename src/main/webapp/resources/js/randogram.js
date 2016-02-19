@@ -278,6 +278,11 @@ var randogramViewModel = new function RandogramViewModel() {
         var p = timeBetweenStartAndToday / timeBetweenStartAndEnd;
         return p;
     };
+
+    self.totalFound = ko.observable(0);
+    self.willBeLoadedInfo = ko.computed (function(){
+        return "Only first 1000 of "+self.totalFound()+" photos will be loaded";
+    });
     //search
     self.searchAction = function () {
         self.images([]);
@@ -293,6 +298,7 @@ var randogramViewModel = new function RandogramViewModel() {
 
         //get tag info
         var willBeLoaded = 100;
+
         $.ajax({
             url: "getTagAmount",
             data: {
@@ -301,9 +307,10 @@ var randogramViewModel = new function RandogramViewModel() {
             dataType: "json",
             success: function (data) {
                 willBeLoaded = data;
+                self.totalFound(data);
                 if(data > 1000){
-                    alert("Only first 1000 of "+data+" photos will be loaded");
                     willBeLoaded = 1000;
+                    $("#taginfoModal").modal("show");
                 }
                 //get first 40 photos
                 $.ajax({
@@ -337,7 +344,7 @@ var randogramViewModel = new function RandogramViewModel() {
                                 clearInterval(timerId);
                                 collapsible('#loading-content-collapsible', 'hide');
                             }
-                        }, 4000);
+                        }, 3500);
                     },
                     error: function () {
                         alert("getFirstImages error");

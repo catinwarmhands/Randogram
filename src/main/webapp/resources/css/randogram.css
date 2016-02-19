@@ -249,6 +249,10 @@ body{
     border-top: 2px solid #eee;
 }
 
+.taginfo-alert{
+    padding:20px;
+}
+
 /*@-webkit-keyframes fadeIn { from { opacity:0; opacity: 1\9; !* IE9 only *! } to { opacity:1; } }*/
 /*@-moz-keyframes fadeIn { from { opacity:0; opacity: 1\9; !* IE9 only *! } to { opacity:1; } }*/
 /*@keyframes fadeIn { from { opacity:0; opacity: 1\9; !* IE9 only *! } to { opacity:1; } }*/
