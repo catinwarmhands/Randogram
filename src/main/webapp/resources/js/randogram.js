@@ -336,10 +336,9 @@ var randogramViewModel = new function RandogramViewModel() {
                         }
                         var i = 0;
                         var timerId = setInterval(function() {
-                            self.tempImages([data[i++]]);
-                            if(i >= data.length){
-                                i = 0;
-                            }
+                            self.tempImages([data[i]]);
+                            i = (i >= data.length ? 0 : i+1);
+
                             if(!self.isLoading()){
                                 clearInterval(timerId);
                                 collapsible('#loading-content-collapsible', 'hide');
