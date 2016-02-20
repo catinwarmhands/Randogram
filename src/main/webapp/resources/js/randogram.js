@@ -1,4 +1,4 @@
-var IS_LOGIN_ENABLED = false;
+var IS_LOGIN_ENABLED = true;
 
 //arrays helpers
 function shuffle(array) {
