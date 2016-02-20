@@ -66,6 +66,10 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     }
 
     private void setToken(String token){
+        if(token == ""){
+            return;
+        }
+
         Token accessToken = null;
         try{
             accessToken = new Token(token, secret);

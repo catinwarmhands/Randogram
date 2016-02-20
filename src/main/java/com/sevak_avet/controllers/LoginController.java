@@ -29,7 +29,7 @@ public class LoginController {
     @RequestMapping(value = "/redirect", method = GET)
     @ResponseBody
     public String redirect(){
-        String authorizationUrl = instagramService.getAuthorizationUrl(null);
+        String authorizationUrl = instagramService.getAuthorizationUrl();
         return authorizationUrl;
     }
 
@@ -42,7 +42,7 @@ public class LoginController {
         }
 
         Verifier verifier = new Verifier(code);
-        Token accessToken = instagramService.getAccessToken(null, verifier);
+        Token accessToken = instagramService.getAccessToken(verifier);
 
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);

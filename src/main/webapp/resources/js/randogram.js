@@ -1,3 +1,5 @@
+var IS_LOGIN_ENABLED = true;
+
 //arrays helpers
 function shuffle(array) {
     var m = array.length, t, i;
@@ -312,13 +314,13 @@ var randogramViewModel = new function RandogramViewModel() {
                     willBeLoaded = 1000;
                     $("#taginfoModal").modal("show");
                 }
-                //get first 40 photos
+                //get first 20 photos
                 $.ajax({
                     url: "getFirstImages",
                     data: {
                         accesToken: self.accesToken(),
                         tags: self.tags(),
-                        amount: 2
+                        amount: 1
                     },
                     dataType: "json",
                     beforeSend: function(){
@@ -328,13 +330,14 @@ var randogramViewModel = new function RandogramViewModel() {
                         var m = moment();
                         var interval = m.diff(self.startTime(), 'milliseconds');
                         //magic numbers!
-                        self.endTime(m.add(((interval/70.0)*(willBeLoaded-data.length))^1.2), 'milliseconds');
+                        self.endTime(m.add((35*(willBeLoaded-data.length))^1.2), 'milliseconds');
 
                         //slideshow
                         if(self.isLoading()) {
                             collapsible('#loading-content-collapsible', 'show');
                         }
-                        var i = 0;
+                        self.tempImages([data[0]]);
+                        var i = 1;
                         var timerId = setInterval(function() {
                             self.tempImages([data[i]]);
                             i = (i >= data.length ? 0 : i+1);
@@ -408,13 +411,14 @@ var randogramViewModel = new function RandogramViewModel() {
 
     //acces token
     self.accesToken = ko.observable(null);
-    self.handleToken = ko.computed (function(){
-        var params = parseParams();
-
-        if(!params.accesToken){
-            window.location = "/";
-        }else{
-            self.accesToken(params.accesToken);
+    self.handleToken = ko.computed (function() {
+        if (IS_LOGIN_ENABLED) {
+            var params = parseParams();
+            if (!params.accesToken) {
+                window.location = "/";
+            } else {
+                self.accesToken(params.accesToken);
+            }
         }
     });
 };
