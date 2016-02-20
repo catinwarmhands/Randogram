@@ -45,10 +45,13 @@
 
     <!--numeric binding for winners amount field-->
     <script src="resources/js/numeric-binding.js"></script>
+
+    <!--double click binding-->
+    <script src="resources/js/doubleclick-binding.js"></script>
 </head>
 <body>
 <div class="left-menu">
-    <div class="logo"><img src="./resources/images/logo.png"></div>
+    <div class="logo"><img src="resources/images/logo.png"></div>
 
     <div class="controls">
         <div class="panel-group" id="accordion">
@@ -209,9 +212,12 @@
             </div>
         </div>
     </div>
-
     <div id="winners-content-collapsible" class="collapse">
-        <div class="hit-the-floor">Winners!</div>
+        <div class="hit-the-floor">
+            <div class="snoop" data-bind="visible: easterEggEnabled"><img src="resources/images/giphy.gif"></div>
+            <span data-bind="event : { dblclick: winnersDbClickHandler }">Winners!</span>
+            <div class="snoop" data-bind="visible: easterEggEnabled"><img src="resources/images/giphy.gif"></div>
+        </div>
         <div class="winners-content" data-bind="foreach: winners">
             <div class="image-cell">
                 <div class="image-info-top">

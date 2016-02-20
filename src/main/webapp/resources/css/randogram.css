@@ -284,3 +284,12 @@ body{
 .hit-the-floor {
     text-align: center;
 }
+
+.snoop{
+    width: 100px;
+    margin: 0px;
+    display: inline-block;
+}
+.snoop img{
+    width:100px;
+}

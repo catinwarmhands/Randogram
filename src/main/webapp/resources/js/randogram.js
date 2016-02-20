@@ -1,4 +1,4 @@
-var IS_LOGIN_ENABLED = true;
+var IS_LOGIN_ENABLED = false;
 
 //arrays helpers
 function shuffle(array) {
@@ -421,6 +421,12 @@ var randogramViewModel = new function RandogramViewModel() {
             }
         }
     });
+
+    //easter
+    self.easterEggEnabled = ko.observable(false);
+    self.winnersDbClickHandler = function(){
+        self.easterEggEnabled(self.easterEggEnabled() ? false : true);
+    }
 };
 
 ko.applyBindings(randogramViewModel);
