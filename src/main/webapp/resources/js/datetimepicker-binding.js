@@ -1,10 +1,10 @@
-/**
- * Created by student on 2/9/16.
- */
 ko.bindingHandlers.datetimepicker = {
     init: function (element, valueAccessor, allBindings) {
+        var locale = window.navigator.userLanguage || window.navigator.language;
+        moment.locale(locale);
         var options = {
             format: 'MM/DD/YYYY',
+            locale: moment.locale(),
             defaultDate: ko.unwrap(valueAccessor())
         };
 

@@ -123,6 +123,8 @@ var randogramViewModel = new function RandogramViewModel() {
         { statusName: "Today" },
         { statusName: "Last week" },
         { statusName: "Last month" },
+        { statusName: "Last 7 days" },
+        { statusName: "Last 30 days" },
         { statusName: "All time" },
         { statusName: "Specify day" },
         { statusName: "Specify interval" }
@@ -153,14 +155,18 @@ var randogramViewModel = new function RandogramViewModel() {
     self.calculateDateFrom = function(){
         switch(self.dateFilterSelected()){
             case "Today":
-                return moment().startOf('day');
+                return moment().startOf('day').locale('en');
             case "Last week":
-                return moment().startOf('week');
+                return moment().startOf('week').locale('en');
             case "Last month":
-                return moment().startOf('month');
+                return moment().startOf('month').locale('en');
+            case "Last 7 days":
+                return moment().subtract(7, 'days').locale('en').startOf('day');
+            case "Last 30 days":
+                return moment().subtract(30, 'days').locale('en').startOf('day');
             case "Specify day":
             case "Specify interval":
-                return moment(self.dateFrom() ? self.dateFrom() : moment()).startOf('day');
+                return moment(self.dateFrom() ? self.dateFrom() : now).locale('en').startOf('day');
             default:
                 return null;
         }
@@ -168,13 +174,13 @@ var randogramViewModel = new function RandogramViewModel() {
     self.calculateDateTo = function(){
         switch(self.dateFilterSelected()){
             case "Specify day":
-                return moment(self.dateFrom() ? self.dateFrom() : moment()).endOf('day');
+                return moment(self.dateFrom() ? self.dateFrom() : moment()).locale('en').endOf('day');
             case "Specify interval":
-                return moment(self.dateTo() ? self.dateTo() : moment()).endOf('day');
+                return moment(self.dateTo() ? self.dateTo() : moment()).locale('en').endOf('day');
             case "All time":
                 return null;
             default:
-                return moment();
+                return moment().locale('en');
         }
     };
 
