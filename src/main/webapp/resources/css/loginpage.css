@@ -4,7 +4,9 @@ html, body {
 body{
     background-image: url("../images/background_linen.png");
     background-repeat:repeat;
+    min-height: 400px;
 }
+
 .main {
     margin: 0 auto;
     width: 370px;
@@ -22,7 +24,7 @@ body{
 
 .sub{
     position: absolute;
-    top: 30%;
+    top: 22%;
 }
 
 .btn-instagram {

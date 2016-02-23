@@ -207,7 +207,7 @@
                     <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
                 </div>
                 <div class="image-thumbnail">
-                    <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: low}"></a>
+                    <img data-bind="attr: {src: low}">
                 </div>
             </div>
         </div>
@@ -231,7 +231,7 @@
                     <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
                 </div>
                 <div class="image-thumbnail">
-                    <img data-bind="attr: {src: low}">
+                    <a data-bind="click: $parent.setPreview" data-toggle="modal" data-target="#previewModal"><img data-bind="attr: {src: low}"></a>
                 </div>
             </div>
         </div>
@@ -266,9 +266,9 @@
                 <div class="preview" id="preview">
                     <div class="head-info">
                         <div class="avatar">
-                            <a data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
+                            <a target="_blank" data-bind="attr: {href: userUrl}"><img data-bind="attr: {src: user.profile_picture}" class="img-circle"></a>
                         </div>
-                        <a data-bind="attr: {href: userUrl}">
+                        <a target="_blank" data-bind="attr: {href: userUrl}">
                             <div class="text-info">
                                 <div class="fullname">
                                     <a data-bind="text: user.full_name, attr: {href: userUrl}"></a>
@@ -280,7 +280,7 @@
                         </a>
                     </div>
                     <div class="image">
-                        <a data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
+                        <a target="_blank" data-bind="attr: {href: link}"><img data-bind="attr: {src: standard}"></a>
                     </div>
                     <div class="image-info">
                         <hr>

@@ -1,5 +1,3 @@
-var IS_LOGIN_ENABLED = true;
-
 //arrays helpers
 function shuffle(array) {
     var m = array.length, t, i;
@@ -412,13 +410,16 @@ var randogramViewModel = new function RandogramViewModel() {
     //acces token
     self.accesToken = ko.observable(null);
     self.handleToken = ko.computed (function() {
-        if (IS_LOGIN_ENABLED) {
-            var params = parseParams();
-            if (!params.accesToken) {
-                window.location = "/";
-            } else {
-                self.accesToken(params.accesToken);
-            }
+        var params = parseParams();
+
+        if(params.isLogin === "false"){
+            return;
+        }
+
+        if (!params.accesToken) {
+            window.location = "/";
+        } else {
+            self.accesToken(params.accesToken);
         }
     });
 
