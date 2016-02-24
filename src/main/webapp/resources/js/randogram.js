@@ -77,7 +77,7 @@ var randogramViewModel = new function RandogramViewModel() {
     };
     /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
-    self.tags = ko.observable("griddynamics");
+    self.tags = ko.observable("griddynamicssaratov");
 
     //tags helpers
     self.areTagsInvalid = ko.computed (function () {
@@ -166,7 +166,7 @@ var randogramViewModel = new function RandogramViewModel() {
                 return moment().subtract(30, 'days').locale('en').startOf('day');
             case "Specify day":
             case "Specify interval":
-                return moment(self.dateFrom() ? self.dateFrom() : now).locale('en').startOf('day');
+                return moment(self.dateFrom() ? self.dateFrom() : moment()).locale('en').startOf('day');
             default:
                 return null;
         }
@@ -199,7 +199,7 @@ var randogramViewModel = new function RandogramViewModel() {
     //statements
     self.isSearchDone = ko.observable(false);
     self.isLoading = ko.observable(false);
-    self.isFollowing = ko.observable(false);
+    self.following = ko.observable("");
 
     self.isLuckyButtonEnabled = ko.computed (function () {
         return !self.isLoading() && self.images().length>0;
@@ -306,6 +306,7 @@ var randogramViewModel = new function RandogramViewModel() {
         var willBeLoaded = 100;
 
         $.ajax({
+            type: "POST",
             url: "getTagAmount",
             data: {
                 tags: self.tags()
@@ -320,6 +321,7 @@ var randogramViewModel = new function RandogramViewModel() {
                 }
                 //get first 20 photos
                 $.ajax({
+                    type: "POST",
                     url: "getFirstImages",
                     data: {
                         accesToken: self.accesToken(),
@@ -366,15 +368,17 @@ var randogramViewModel = new function RandogramViewModel() {
 
         //get images
         $.ajax({
+            type: "POST",
             url: "getImages",
             data: {
                 accesToken: self.accesToken(),
                 tags: self.tags(),
-                following: self.isFollowing(),
+                following: self.following(),
                 dateTimeFrom: format(toUTC(self.calculateDateFrom())),
                 dateTimeTo: format(toUTC(self.calculateDateTo()))
             },
             dataType: "json",
+            //contentType: "application/x-www-form-urlencoded",
             success: function (data) {
                 self.images(data);
                 setUsersAndPosts();

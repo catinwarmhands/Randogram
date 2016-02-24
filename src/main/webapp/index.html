@@ -105,12 +105,12 @@
                     <div class="panel-body">
 <!--Advanced-->
                         <div class="tags-section">
-                            <label for="tags2">Tags:</label>
+                            <label for="tags2">Tags</label>
                             <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags2"/>
                         </div>
                         <div class="following-section">
-                            <label for="sub">Only GDS followers:</label>
-                            <input type="checkbox" name="sub" id="sub" data-bind="checked: isFollowing">
+                            <label for="sub">Only followers of</label>
+                            <input type="text" name="sub" id="sub" class="form-control" data-bind="value: following"/>
                         </div>
                         <div class="dropdown">
                             <label for="dropdownMenu1">Uploaded</label>

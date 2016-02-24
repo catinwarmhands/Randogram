@@ -11,9 +11,12 @@ import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -27,14 +30,14 @@ public class IndexController {
     @Autowired
     private InstagramFetcher<Image> fetcher;
 
-    @RequestMapping(value = "/getTagAmount", method = GET)
+    @RequestMapping(value = "/getTagAmount", method = RequestMethod.POST)
     @ResponseBody
     public long getTagAmount (@RequestParam("tags") String tagsString) {
         ArrayList<String> tags = TagHelper.splitTags(tagsString);
         return fetcher.getTagAmount(fetcher.getSmallestTag(tags));
     }
 
-    @RequestMapping(value = "/getFirstImages", method = GET)
+    @RequestMapping(value = "/getFirstImages", method = RequestMethod.POST)
     @ResponseBody
     public String getFirstImages (@RequestParam("accesToken") String accesToken,
                                   @RequestParam("tags") String tagsString,
@@ -46,11 +49,11 @@ public class IndexController {
         return new Gson().toJson(images);
     }
 
-    @RequestMapping(value = "/getImages", method = GET)
+    @RequestMapping(value = "/getImages", method = RequestMethod.POST)
     @ResponseBody
     public String getImages (@RequestParam("accesToken") String accesToken,
                              @RequestParam("tags") String tagsString,
-                             @RequestParam("following") boolean isFollowing,
+                             @RequestParam("following") String following,
                              @RequestParam("dateTimeFrom") String from,
                              @RequestParam("dateTimeTo") String to) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
@@ -60,7 +63,7 @@ public class IndexController {
         ArrayList<String> tags = TagHelper.splitTags(tagsString);
         if(tags.isEmpty()){return null;}
 
-        List<Image> images = fetcher.fetchByTags(accesToken, tags, isFollowing, fromDate, toDate);
+        List<Image> images = fetcher.fetchByTags(accesToken, tags, following, fromDate, toDate);
         return new Gson().toJson(images);
     }
 }

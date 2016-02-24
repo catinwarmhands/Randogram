@@ -66,7 +66,7 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
     }
 
     private void setToken(String token){
-        if(token == ""){
+        if(token.isEmpty()){
             return;
         }
 
@@ -83,16 +83,16 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         }
     }
 ////this method calls from IndexController
-    public List<Image> fetchByTags(String token, ArrayList<String> tags, boolean isFollowing, LocalDateTime fromDate, LocalDateTime toDate) {
+    public List<Image> fetchByTags(String token, ArrayList<String> tags, String following, LocalDateTime fromDate, LocalDateTime toDate) {
         setToken(token);
 
-        LinkedHashSet<Image> imagesSet = new LinkedHashSet<>();
-        imagesSet.addAll(fetchByTag(getSmallestTag(tags), fromDate, toDate));
+        //LinkedHashSet<Image> imagesSet = new LinkedHashSet<>();
+        ArrayList <Image> imagesList = new ArrayList<>();
+        imagesList.addAll(fetchByTag(getSmallestTag(tags), fromDate, toDate));
 
-        if(isFollowing) {filterByFollowing(imagesSet);}
-        if(tags.size() > 1) {filterByTagsConjunction(tags, imagesSet);}
+        filterByFollowing(following, imagesList);
+        if(tags.size() > 1) {filterByTagsConjunction(tags, imagesList);}
 
-        ArrayList <Image> imagesList = new ArrayList<>(imagesSet);
         return imagesList;
     }
 
@@ -101,8 +101,8 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         return fetchByTag(getSmallestTag(tags), amount);
     }
 
-    private void filterByTagsConjunction(ArrayList<String> tags, LinkedHashSet<Image> imagesSet) {
-        Iterator<Image> i = imagesSet.iterator();
+    private void filterByTagsConjunction(ArrayList<String> tags, ArrayList <Image> imagesList) {
+        Iterator<Image> i = imagesList.iterator();
 
         while (i.hasNext()) {
             Image image = i.next();
@@ -120,24 +120,35 @@ public class InstagramFetcherImpl implements InstagramFetcher<Image> {
         }
     }
 
-    private void filterByFollowing(LinkedHashSet<Image> imagesSet) {
-        Iterator<Image> i = imagesSet.iterator();
+    private void filterByFollowing(String following, ArrayList <Image> imagesList) {
+        if(following.isEmpty()){
+            return;
+        }
 
-        long userId = 1608843858; //griddynamics_saratov user id
+        //search for user
+        UserFeed userFeed = null;
+        try {
+            userFeed = instagram.searchUser(following);
+        } catch (InstagramException e) {
+            e.printStackTrace();
+        }
+        List<UserFeedData> userList = userFeed.getUserList();
+
+        String userId = userList.get(0).getId();
+
+        //getting followers
         UserFeed followers;
         try {
-            followers = instagram.getUserFollowedByList(""+userId);
+            followers = instagram.getUserFollowedByList(userId);
         } catch (InstagramException e) {
             throw new RuntimeException(e);
         }
 
-        List<UserFeedData> followersList = followers.getUserList();
-        List<String> followersIdList = new ArrayList<>();
+        //get followers ids
+        List<String> followersIdList = followers.getUserList().stream().map(UserFeedData::getId).collect(Collectors.toList());
 
-        for(UserFeedData u : followersList){
-            followersIdList.add(u.getId());
-        }
 
+        Iterator<Image> i = imagesList.iterator();
         while (i.hasNext()) {
             Image image = i.next();
 
