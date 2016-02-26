@@ -1,4 +1,13 @@
 //arrays helpers
+
+function unique(list) {
+    var result = [];
+    $.each(list, function(i, e) {
+        if ($.inArray(e, result) == -1) result.push(e);
+    });
+    return result;
+}
+
 function shuffle(array) {
     var m = array.length, t, i;
     while (m) {
@@ -218,8 +227,7 @@ var randogramViewModel = new function RandogramViewModel() {
     };
 
     var setUsersAndPosts = function(){
-        var users = new Set(self.images().map(function(image){return image.user.username}));
-        var usersArray = Array.from(users);
+        var usersArray = unique(self.images().map(function(image){return image.user.username}));
 
         var usersPairs = usersArray.map(function(x){return {username: x, posts: []}});
         usersPairs.forEach(function(pair){
@@ -378,7 +386,6 @@ var randogramViewModel = new function RandogramViewModel() {
                 dateTimeTo: format(toUTC(self.calculateDateTo()))
             },
             dataType: "json",
-            //contentType: "application/x-www-form-urlencoded",
             success: function (data) {
                 self.images(data);
                 setUsersAndPosts();
