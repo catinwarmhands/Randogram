@@ -1,4 +1,4 @@
-package com.sevak_avet.controllers;
+package com.leoon.controllers;
 
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
@@ -15,9 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-/**
- * Created by savetisyan on 26/01/16
- */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -25,12 +22,10 @@ public class LoginController {
     @Autowired
     private InstagramService instagramService;
 
-
     @RequestMapping(value = "/redirect", method = GET)
     @ResponseBody
-    public String redirect(){
-        String authorizationUrl = instagramService.getAuthorizationUrl();
-        return authorizationUrl;
+    public String redirect() {
+		return instagramService.getAuthorizationUrl();
     }
 
     @RequestMapping(value = "/handleToken")

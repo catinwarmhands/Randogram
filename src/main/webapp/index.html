@@ -54,7 +54,49 @@
     <div class="logo"><img src="resources/images/logo.png"></div>
 
     <div class="controls">
-        <div class="panel-group" id="accordion">
+        <div class="tags-section">
+            <label for="tags">Tags</label>
+            <input type="text" class="form-control" data-bind="value: tags" data-role="tagsinput" id="tags"/>
+        </div>
+        <div class="following-section">
+            <label for="sub">Only followers of</label>
+            <input type="text" name="sub" id="sub" class="form-control" data-bind="value: following"/>
+        </div>
+        <div class="date-section">
+            <div class="dropdown">
+                <label for="dateDropdownMenu">Uploaded</label>
+                <button class="btn btn-default dropdown-toggle" type="button" id="dateDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span data-bind="text: dateFilterSelected"></span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateDropdownMenu" data-bind="foreach: $root.dateFilterPresets">
+                    <li data-bind="css: {'disabled' : statusName==$parent.dateFilterSelected()}, click: $parent.dateFilterClickHandler">
+                        <a><span data-bind="text: statusName"></span></a>
+                    </li>
+                </ul>
+            </div>
+            <div id="DateFrom-collapsible" class="collapse">
+                <div class="advancedDateFrom-section">
+                    <div class="form-group">
+                        <div class="input-group date" id="advancedDateFrom" data-bind="datetimepicker: dateFrom">
+                            <input type="text" class="form-control"/>
+                            <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="DateTo-collapsible" class="collapse">
+                <div class="advancedDateTo-section">
+                    <div class="form-group">
+                        <div class="input-group date" id="advancedDateTo" data-bind="datetimepicker: dateTo">
+                            <input type="text" class="form-control"/>
+                            <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading" data-bind="click: basicCollapsibleHandler">
                     <h4 class="panel-title">
@@ -63,7 +105,7 @@
                 </div>
                 <div id="basicCollapsible" class="panel-collapse collapse in">
                     <div class="panel-body">
-<!--Basic-->
+&lt;!&ndash;Basic&ndash;&gt;
                         <div class="tags-section">
                             <label for="tags1">Tags:</label>
                             <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags1"/>
@@ -93,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-<!--/Basic-->
+&lt;!&ndash;/Basic&ndash;&gt;
                     </div>
                 </div>
             </div>
@@ -103,7 +145,7 @@
                 </div>
                 <div id="advancedCollapsible" class="panel-collapse collapse">
                     <div class="panel-body">
-<!--Advanced-->
+&lt;!&ndash;Advanced&ndash;&gt;
                         <div class="tags-section">
                             <label for="tags2">Tags</label>
                             <input type="text" class="form-control" data-bind="value: tagsHandler" data-role="tagsinput" id="tags2"/>
@@ -144,11 +186,11 @@
                                 </div>
                             </div>
                         </div>
-<!--/Advanced-->
+&lt;!&ndash;/Advanced&ndash;&gt;
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="search-button">
             <button id="srch-btn" class="ladda-button" data-color="green" data-style="slide-down" type="button" data-bind="enable: isSearchButtonEnabled, click: searchAction, ladda: isLoading">Search</button>
         </div>

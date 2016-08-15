@@ -1,11 +1,8 @@
-package com.sevak_avet.domain;
+package com.leoon.domain;
 
-import org.jinstagram.InstagramOembed;
 import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.User;
-import org.jinstagram.entity.oembed.OembedInformation;
 import org.jinstagram.entity.users.feed.MediaFeedData;
-import org.jinstagram.exceptions.InstagramException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

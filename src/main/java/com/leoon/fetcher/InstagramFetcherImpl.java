@@ -1,11 +1,9 @@
-package com.sevak_avet.fetcher;
+package com.leoon.fetcher;
 
-import com.sevak_avet.domain.Image;
+import com.leoon.domain.Image;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
-import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.entity.common.Pagination;
-import org.jinstagram.entity.tags.TagInfoData;
 import org.jinstagram.entity.tags.TagInfoFeed;
 import org.jinstagram.entity.tags.TagMediaFeed;
 import org.jinstagram.entity.users.feed.UserFeed;

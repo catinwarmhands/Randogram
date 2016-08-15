@@ -6,9 +6,9 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <bean name="spring-context" class="com.sevak_avet.config.SpringConfig"/>
+    <bean name="spring-context" class="com.leoon.config.SpringConfig"/>
 
-    <context:component-scan base-package="com.sevak_avet"/>
+    <context:component-scan base-package="com.leoon"/>
     <context:property-placeholder location="classpath:credentials.properties"/>
     <context:annotation-config/>
 

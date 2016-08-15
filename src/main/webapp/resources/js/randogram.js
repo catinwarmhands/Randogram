@@ -73,17 +73,8 @@ function setTags(name, tags){
 }
 
 //Knockout
-var randogramViewModel = new function RandogramViewModel() {
+ko.applyBindings(new function RandogramViewModel() {
     var self = this;
-    /////////////////////////////////////////////////////accordion//////////////////////////////////////////////////////
-    self.basicCollapsibleHandler = function(){
-        collapsible('#basicCollapsible', 'show');
-        collapsible('#advancedCollapsible', 'hide');
-    };
-    self.advancedCollapsibleHandler = function(){
-        collapsible('#basicCollapsible', 'hide');
-        collapsible('#advancedCollapsible', 'show');
-    };
     /////////////////////////////////////////////////////tags///////////////////////////////////////////////////////////
     //tags
     self.tags = ko.observable("griddynamicssaratov");
@@ -94,41 +85,36 @@ var randogramViewModel = new function RandogramViewModel() {
     });
 
     //tagsinput fields handler (so bad!)
-    self.tagsFix = ko.observable(true);
-    self.checkedFix = ko.observable(0);
-    self.tagsHandler = ko.pureComputed({
-        read: function () {
-            return self.tags();
-        },
-        write: function (value) {
-            self.tags(value);
-
-            //мне очень стыдно за этот костыль
-            //защита от срабатывания при загрузке страницы
-            if(self.checkedFix() < 2){
-                self.checkedFix(self.checkedFix()+1);
-                return;
-            }
-            //защита от зацикливания
-            if(self.tagsFix()){
-                self.tagsFix(false);
-                setTags('#tags1', self.tags());
-                setTags('#tags2', self.tags());
-                setTimeout(function(){self.tagsFix(true)}, 100);
-            }
-        },
-        owner: this
-    });
+    // self.tagsFix = ko.observable(true);
+    // self.checkedFix = ko.observable(0);
+    // self.tagsHandler = ko.pureComputed({
+    //     read: function () {
+    //         return self.tags();
+    //     },
+    //     write: function (value) {
+    //         self.tags(value);
+    //
+    //         //мне очень стыдно за этот костыль
+    //         //защита от срабатывания при загрузке страницы
+    //         if(self.checkedFix() < 2){
+    //             self.checkedFix(self.checkedFix()+1);
+    //             return;
+    //         }
+    //         //защита от зацикливания
+    //         if(self.tagsFix()){
+    //             self.tagsFix(false);
+    //             setTags('#tags1', self.tags());
+    //             setTags('#tags2', self.tags());
+    //             setTimeout(function(){self.tagsFix(true)}, 100);
+    //         }
+    //     },
+    //     owner: this
+    // });
 
     /////////////////////////////////////////////////////dates//////////////////////////////////////////////////////////
     //date filter type
-    self.dateFilterSelected = ko.observable("Today");
-    self.dateFilterPresetsBasic = [
-        { statusName: "Today" },
-        { statusName: "Specify day" },
-        { statusName: "All time" }
-    ];
-    self.dateFilterPresetsAdvanced = [
+    self.dateFilterSelected = ko.observable("All time");
+    self.dateFilterPresets = [
         { statusName: "Today" },
         { statusName: "Last week" },
         { statusName: "Last month" },
@@ -142,18 +128,16 @@ var randogramViewModel = new function RandogramViewModel() {
         self.dateFilterSelected(this.statusName);
         switch(self.dateFilterSelected()){
             case "Specify day":
-                collapsible('#basicDateFrom-collapsible', 'show');
-                collapsible('#advancedDateFrom-collapsible', 'show');
-                collapsible('#advancedDateTo-collapsible', 'hide');
+                collapsible('#DateFrom-collapsible', 'show');
+                collapsible('#DateTo-collapsible', 'hide');
                 break;
             case "Specify interval":
-                collapsible('#advancedDateFrom-collapsible', 'show');
-                collapsible('#advancedDateTo-collapsible', 'show');
+                collapsible('#DateFrom-collapsible', 'show');
+                collapsible('#DateTo-collapsible', 'show');
                 break;
             default:
-                collapsible('#basicDateFrom-collapsible', 'hide');
-                collapsible('#advancedDateFrom-collapsible', 'hide');
-                collapsible('#advancedDateTo-collapsible', 'hide');
+                collapsible('#DateFrom-collapsible', 'hide');
+                collapsible('#DateTo-collapsible', 'hide');
         }
     };
 
@@ -162,23 +146,31 @@ var randogramViewModel = new function RandogramViewModel() {
     self.dateTo = ko.observable(moment().format("MM/DD/YYYY"));
 
     self.calculateDateFrom = function(){
-        switch(self.dateFilterSelected()){
+        var result;
+        switch(self.dateFilterSelected()) {
             case "Today":
-                return moment().startOf('day').locale('en');
+                result = moment();
+                break;
             case "Last week":
-                return moment().startOf('week').locale('en');
+                result = moment().startOf('week');
+                break;
             case "Last month":
-                return moment().startOf('month').locale('en');
+                result = moment().startOf('month');
+                break;
             case "Last 7 days":
-                return moment().subtract(7, 'days').locale('en').startOf('day');
+                result = moment().subtract(7, 'days');
+                break;
             case "Last 30 days":
-                return moment().subtract(30, 'days').locale('en').startOf('day');
+                result = moment().subtract(30, 'days');
+                break;
             case "Specify day":
             case "Specify interval":
-                return moment(self.dateFrom() ? self.dateFrom() : moment()).locale('en').startOf('day');
+                result = self.dateFrom() ? self.dateFrom() : moment();
+                break;
             default:
                 return null;
         }
+        return result.locale('en').startOf('day');
     };
     self.calculateDateTo = function(){
         switch(self.dateFilterSelected()){
@@ -445,15 +437,11 @@ var randogramViewModel = new function RandogramViewModel() {
     self.winnersDbClickHandler = function(){
         self.easterEggEnabled(self.easterEggEnabled() ? false : true);
     }
-};
+});
 
-ko.applyBindings(randogramViewModel);
-
-//Activate datetimepickers and make them linked to each other
-//$('#dateTimeFrom').datetimepicker();
-$('#basicDateFrom').datetimepicker();
-$('#advancedDateFrom').datetimepicker();
-$('#advancedDateTo').datetimepicker();
+//Activate datetimepickers
+$('#DateFrom').datetimepicker();
+$('#DateTo').datetimepicker();
 
 Ladda.bind( '#srch-btn', {
     callback: function( instance ) {

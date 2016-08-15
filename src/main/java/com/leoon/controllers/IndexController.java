@@ -1,13 +1,10 @@
-package com.sevak_avet.controllers;
+package com.leoon.controllers;
 
-import com.sevak_avet.domain.Image;
+import com.leoon.domain.Image;
 import com.google.gson.Gson;
-import com.sevak_avet.fetcher.InstagramFetcher;
-import com.sevak_avet.util.TagHelper;
+import com.leoon.fetcher.InstagramFetcher;
+import com.leoon.util.TagHelper;
 import org.apache.log4j.Logger;
-import org.jinstagram.InstagramOembed;
-import org.jinstagram.entity.oembed.OembedInformation;
-import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class IndexController {
@@ -64,6 +57,7 @@ public class IndexController {
         if(tags.isEmpty()){return null;}
 
         List<Image> images = fetcher.fetchByTags(accesToken, tags, following, fromDate, toDate);
+
         return new Gson().toJson(images);
     }
 }

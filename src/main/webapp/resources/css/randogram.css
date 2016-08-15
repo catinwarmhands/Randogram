@@ -26,7 +26,7 @@ body{
     cursor: default;
 }
 .left-menu label{
-    /*color: white;*/
+    color: white;
 }
 
 .logo{
@@ -45,23 +45,21 @@ body{
     margin-bottom: 10px;
 }
 
+
+
 .date-section, .buttons-section{
     margin-bottom: 15px;
     color: white;
 }
-
 .bootstrap-tagsinput {
     width: 100% !important;
     padding-top: 0px;
     padding-bottom: 4px;
     line-height: 2;
 }
+
 .basicDateFrom-section, .advancedDateFrom-section{
     margin-top: 20px;
-}
-
-.following-section{
-    margin-bottom: 10px;
 }
 
 .search-button, .chooseLucky-button{
@@ -74,6 +72,10 @@ body{
 
 .search-button button{
     width:100%;
+}
+
+.following-section{
+    margin-bottom: 22px;
 }
 .chooseLucky-button button{
     width:100%;
